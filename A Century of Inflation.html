@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التضخم ... قرن من الزمان </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* START: General Body Styles */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #073B4C; /* Base background */
+            color: #FFFFFF;
+        }
+        /* END: General Body Styles */
+
+        /* START: Chart Container Styles */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Limits max width on large screens */
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px; /* Default height for mobile */
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px; /* Larger height for desktop */
+            }
+        }
+        /* END: Chart Container Styles */
+
+        /* START: Card Styles */
+        .card {
+            background-color: #118AB2;
+            border-radius: 1rem;
+            padding: 1rem; /* Adjusted padding for mobile */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        /* END: Card Styles */
+
+        /* START: Highlight Colors */
+        .highlight-yellow {
+            color: #FFD166;
+        }
+        .highlight-red {
+            color: #FF6B6B;
+        }
+        .highlight-green {
+            color: #06D6A0;
+        }
+        /* END: Highlight Colors */
+
+        /* START: Timeline Styles */
+        .timeline {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the vertical line */
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%; /* Center the line */
+            width: 4px;
+            background-color: #118AB2;
+            transform: translateX(-50%); /* Adjust for line width */
+        }
+        .timeline-item {
+            position: relative;
+            width: 100%; /* Full width on mobile, will be split on desktop */
+            margin-bottom: 30px; /* Space between items */
+            display: flex; /* Use flexbox for content and icon alignment */
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        /* Mobile-first: Default to right-aligned content */
+        .timeline-item .timeline-content {
+            background-color: #073B4C;
+            border: 2px solid #118AB2;
+            padding: 15px;
+            border-radius: 10px;
+            flex-grow: 1;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-right: 60px; /* Space for icon on the right */
+            text-align: right; /* RTL alignment */
+        }
+        .timeline-item .timeline-icon {
+            position: absolute;
+            top: 0; /* Align icon to top of content */
+            right: 0; /* Position icon on the right for RTL */
+            width: 40px;
+            height: 40px;
+            background-color: #FFD166;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #073B4C;
+            z-index: 10;
+            transform: translateX(50%); /* Center icon on the line */
+        }
+
+        /* Desktop specific styles for alternating timeline */
+        @media (min-width: 768px) {
+            .timeline-item {
+                width: 50%; /* Each item takes half width */
+                margin-bottom: 40px;
+            }
+            .timeline-item:nth-child(odd) {
+                /* Items on the right side */
+                align-self: flex-end; /* Push to the right */
+                padding-right: 40px; /* Space for icon and line */
+                padding-left: 0; /* Reset left padding */
+                text-align: right;
+            }
+            .timeline-item:nth-child(even) {
+                /* Items on the left side */
+                align-self: flex-start; /* Push to the left */
+                padding-left: 40px; /* Space for icon and line */
+                padding-right: 0; /* Reset right padding */
+                text-align: left;
+            }
+            .timeline-item:nth-child(odd) .timeline-content {
+                margin-right: 0; /* Reset margin */
+                margin-left: auto; /* Push content to right within its 50% width */
+                text-align: right;
+            }
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 0; /* Reset margin */
+                margin-right: auto; /* Push content to left within its 50% width */
+                text-align: left;
+            }
+            .timeline-item:nth-child(odd) .timeline-icon {
+                right: -22px; /* Position icon on the line */
+                left: auto; /* Ensure no left positioning */
+                transform: translateY(-50%) translateX(0%); /* Center vertically on desktop */
+            }
+            .timeline-item:nth-child(even) .timeline-icon {
+                left: -22px; /* Position icon on the line */
+                right: auto; /* Ensure no right positioning */
+                transform: translateY(-50%) translateX(0%); /* Center vertically on desktop */
+            }
+            .timeline-content h5 {
+                font-size: 1.25rem; /* text-xl for desktop */
+            }
+            .timeline-content p {
+                font-size: 1rem; /* text-base for desktop */
+            }
+        }
+        /* END: Timeline Styles */
+
+        /* START: Input Group Styles */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            font-weight: bold;
+            color: #FFD166;
+        }
+        .input-group input, .input-group select {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #118AB2;
+            background-color: #FFFFFF; /* White background */
+            color: #00008B; /* Dark blue text for maximum visibility */
+            font-size: 1rem;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #FFD166;
+            box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.5);
+        }
+        /* END: Input Group Styles */
+
+        /* START: Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #073B4C;
+            margin: auto;
+            padding: 2rem;
+            border: 2px solid #118AB2;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: relative;
+            text-align: center;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #FFD166;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-button {
+            background-color: #06D6A0;
+            color: #073B4C;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+        .modal-button:hover {
+            background-color: #05B38B;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #FFD166;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hidden {
+            display: none;
+        }
+        /* END: Modal Styles */
+
+        /* START: Section Specific Backgrounds */
+        #the-silent-thief {
+            background-color: #0A4E60; /* Slightly lighter teal */
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+        #the-secret-friend {
+            background-color: #0A4E60; /* Changed to match #the-silent-thief */
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+        #the-solution {
+            background-color: #0A4E60; /* Changed to match #the-silent-thief */
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+        /* END: Section Specific Backgrounds */
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- START: Header Section -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸 االجنيه المصري: رحلة قرن</h1>
+            <h2 class="text-xl md:text-4xl font-bold">بين "اللص الصامت" و"الصديق الخفي"</h2>
+            <p class="text-base md:text-xl mt-4 max-w-3xl mx-auto text-gray-300">"الجنيه مش دايم… التضخم هو اللي دايم!" هل تساءلت يوماً عن قيمة "جنيه" زمان؟ في هذا الإنفوجرافيك، نكشف رحلة الجنيه المصري وتأثير التضخم عليه، وكيف تحمي مدخراتك من الضياع!</p>
+        </header>
+        <!-- END: Header Section -->
+
+        <main>
+            <!-- START: Part 1 - The Silent Thief Section -->
+            <section id="the-silent-thief" class="mb-12 md:mb-16">
+                <h3 class="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8"><span class="highlight-red">الجزء الأول:</span> اللص الصامت... كيف أكل التضخم الجنيه!</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 text-center">
+                    <div class="card">
+                        <p class="text-4xl md:text-6xl font-black highlight-yellow">+39,000</p>
+                        <p class="mt-1 text-sm md:text-lg">جنيه هي القوة الشرائية لـ 100 جنيه من عام 1900 بعملة اليوم!</p>
+                    </div>
+                    <div class="card">
+                        <p class="text-4xl md:text-6xl font-black highlight-yellow">+39,600%</p>
+                        <p class="mt-1 text-sm md:text-lg">هو معدل التضخم التراكمي التقريبي منذ عام 1900.</p>
+                    </div>
+                    <div class="card">
+                        <p class="text-4xl md:text-6xl font-black highlight-yellow">&gt;99%</p>
+                        <p class="mt-1 text-sm md:text-lg">خسارة في القوة الشرائية لمن احتفظ بمدخراته "تحت البلاطة".</p>
+                    </div>
+                </div>
+
+                <div class="card mb-8 md:mb-12">
+                    <h4 class="text-xl md:text-2xl font-bold mb-3 text-center">قيمة <span id="baseAmountDisplay">100</span> جنيه من الماضي تعادل اليوم</h4>
+                    <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح الفرق الهائل بين الاحتفاظ بمبلغ <span id="baseAmountDisplay2">100</span> جنيه من كل فترة زمنية، وما تعادله اليوم (يونيو 2025). لاحظ كيف تآكلت قيمتها بشكل دراماتيكي.</p>
+                    <div class="input-group max-w-xs mx-auto">
+                        <label for="baseAmountInput" class="text-sm md:text-base">أدخل المبلغ القديم للمقارنة (جنيه):</label>
+                        <input type="number" id="baseAmountInput" value="100" min="1" step="10">
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="purchasingPowerChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="relative wrap overflow-hidden p-4 md:p-10 h-full">
+                    <h4 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">لحظات الانهيار التاريخية</h4>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon">🏛️</div>
+                            <div class="timeline-content">
+                                <h5>1952: بداية التحول</h5>
+                                <p>بعد ثورة يوليو، بدأت الدولة تتدخل في السوق وتدعم الأسعار، مما أحدث خللاً في التوازن الاقتصادي على المدى الطويل.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">🌍</div>
+                            <div class="timeline-content">
+                                <h5>السبعينات (1970s): قفزات سعرية</h5>
+                                <p>الانفتاح الاقتصادي السريع وغير المنظم أدى إلى قفزات سعرية مفاجئة وكبيرة.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">📈</div>
+                            <div class="timeline-content">
+                                <h5>التسعينات (1990s): الخصخصة</h5>
+                                <p>بدأت سياسات الخصخصة، وبدأ الجنيه يتعوّم جزئيًا (تحديد سعره حسب العرض والطلب جزئياً)، مما أثر على استقراره.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">📣</div>
+                            <div class="timeline-content">
+                                <h5>2003: إشارة التعويم</h5>
+                                <p>بدأ مصطلح "تعويم الجنيه" يظهر بقوة في النقاشات الاقتصادية، مما عكس تزايد الضغوط على العملة.</p>
+                            </div>
+                        </div>
+                         <div class="timeline-item">
+                            <div class="timeline-icon">🏦</div>
+                            <div class="timeline-content">
+                                <h5>2016: التعويم الكبير</h5>
+                                <p>التعويم الرسمي الشامل للجنيه، مما أدى لقفزة ضخمة في سعر الدولار وتآكل كبير في قيمة العملة.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">📉</div>
+                            <div class="timeline-content">
+                                <h5>2023: فخ الذعر</h5>
+                                <p>لما كل الناس ربطت سعر الصرف بالتضخم، وبدأ الدولار الرسمي بـ30 جنيه ويطير في السوق السوداء لـ40 و 50 و 60 جنيه… حصل هلع حقيقي! الناس، خوفاً على مدخراتها، اشترت أي حاجة تحافظ على قيمتها، ومنهم اللي اشترى دولار على 60 جنيه. وللأسف، لما تم تخفيض الجنيه في البنك وبقى على 50 جنيه، اللي اشتروا على سعر الـ60 "لبسوا في الحيطة" وخسروا جزء من فلوسهم، ومبقوش عارفين يتصرفوا ولا يبيعوا اللي اشتروه. ده بيأكد إن قرارات الذعر المالي غالباً ما تكون فخاً.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">⬇️</div>
+                            <div class="timeline-content">
+                                <h5>يونيو 2025: بداية الانكماش وتأجيل الشراء</h5>
+                                <p>بعد موجات التضخم العالية، شهد شهر يونيو 2025 تضخماً شهرياً سلبياً لأول مرة منذ أكثر من عام، مما أدى إلى انخفاض أسعار بعض السلع بشكل ملحوظ. هذه الظاهرة، المعروفة بالانكماش، دفعت المستهلكين إلى تأجيل قرارات الشراء، خوفاً من استمرار تراجع الأسعار، مما قد يؤدي إلى تباطؤ اقتصادي.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END: Part 1 - The Silent Thief Section -->
+
+            <!-- START: Part 2 - The Secret Friend Section -->
+            <section id="the-secret-friend" class="mb-12 md:mb-16">
+                <h3 class="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8"><span class="highlight-green">الجزء الثاني:</span> الصديق السري... فوائد التضخم المعتدل!</h3>
+                <p class="text-center max-w-3xl mx-auto mb-8 text-gray-300 text-sm md:text-base">مفاجأة! التضخم ليس دائماً شريراً. عندما يكون معتدلاً ومسيطرًا عليه (2-3% سنوياً)، يمكن أن يكون مفيداً للاقتصاد. **"التضخم عامل زي الملح في الأكل… رشة بسيطة تفتح النفس. إنما كتير؟ يخليك ترمي الطبق كله!"**</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+                    <div class="card text-center">
+                        <p class="text-4xl mb-3">🏃</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يحفز الإنفاق</h4>
+                        <p class="text-gray-200 text-sm md:text-base">يشجع الناس على الشراء والاستثمار بدلاً من تخزين الأموال التي تقل قيمتها، مما يحرك عجلة الاقتصاد.</p>
+                    </div>
+                    <div class="card text-center">
+                        <p class="text-4xl mb-3">🤝</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يسهل تعديل الأجور</h4>
+                        <p class="text-gray-200 text-sm md:text-base">يمنح الشركات مرونة لتعديل تكاليفها وأجورها بشكل تدريجي وسلس دون الحاجة لخفض الرواتب بشكل مباشر.</p>
+                    </div>
+                    <div class="card text-center">
+                        <p class="text-4xl mb-3">⛓️</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يخفف عبء الديون</h4>
+                        <p class="text-gray-200 text-sm md:text-base">يقلل القيمة الحقيقية للديون بمرور الوقت، مما يسهل على الأفراد والحكومات سداد قروضهم.</p>
+                    </div>
+                    <div class="card text-center">
+                        <p class="text-4xl mb-3">⚙️</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يعطي مساحة للمناورة</h4>
+                        <p class="text-gray-200 text-sm md:text-base">يمنح البنك المركزي القدرة على خفض أسعار الفائدة بشكل فعال لتحفيز الاقتصاد في أوقات الركود.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- END: Part 2 - The Secret Friend Section -->
+
+            <!-- START: Part 3 - The Solution Section -->
+            <section id="the-solution" class="mb-12 md:mb-16">
+                <h3 class="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8"><span class="highlight-yellow">الجزء الثالث:</span> كيف تحمي مدخراتك من الذوبان؟</h3>
+                <p class="text-center max-w-3xl mx-auto mb-8 text-gray-300 text-sm md:text-base">الخلاصة بسيطة: "اجعل فلوسك تجري أسرع من التضخم!". الاحتفاظ بالنقود كاش هو أكبر خسارة. إليك كيف تحمي نفسك:</p>
+
+                <div class="card mb-8 md:mb-12">
+                    <h4 class="text-xl md:text-2xl font-bold mb-3 text-center">مقارنة صادمة: 10,000 جنيه من عام 2000</h4>
+                     <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح الفرق الهائل بين الاحتفاظ بمبلغ 10,000 جنيه "تحت البلاطة" واستثماره في الذهب منذ عام 2000 وحتى اليوم (يونيو 2025). لاحظ أن نفس المبلغ لو استثمر في الذهب لكانت قيمته اليوم حوالي **1.7 مليون جنيه**!</p>
+                    <div class="chart-container">
+                        <canvas id="investmentChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+                    <div class="card text-center">
+                         <p class="text-4xl mb-3">🥇</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">الذهب</h4>
+                        <p class="text-gray-200 text-sm md:text-base">ملاذ آمن تاريخي يحتفظ بقيمته على المدى الطويل ويتفوق على التضخم في كثير من الأحيان.</p>
+                    </div>
+                     <div class="card text-center">
+                         <p class="text-4xl mb-3">💵</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">العملات المستقرة</h4>
+                        <p class="text-gray-200 text-sm md:text-base">تنويع المدخرات بعملات أجنبية قوية مثل الدولار يقلل من مخاطر تآكل قيمة العملة المحلية.</p>
+                    </div>
+                     <div class="card text-center">
+                         <p class="text-4xl mb-3">📈</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">الأصول النامية</h4>
+                        <p class="text-gray-200 text-sm md:text-base">الاستثمار في العقارات، الأسهم، أو شهادات الاستثمار ذات العائد الحقيقي المرتفع.</p>
+                    </div>
+                    <div class="card text-center">
+                         <p class="text-4xl mb-3">🧠</p>
+                        <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">استثمر في نفسك</h4>
+                        <p class="text-gray-200 text-sm md:text-base">اكتساب مهارات جديدة أو العمل في مجالات تدر دخلاً بالعملة الصعبة هو أقوى استثمار.</p>
+                    </div>
+                </div>
+
+                <!-- START: Summary Section -->
+                <div class="card mt-8 mb-8 md:mb-12 text-center">
+                    <h4 class="text-xl md:text-2xl font-bold highlight-yellow mb-3">الخلاصة: الوعي المالي هو درعك الأقوى!</h4>
+                    <p class="max-w-3xl mx-auto text-gray-300 text-sm md:text-base">الجنيه المصري مر برحلة مؤلمة. من تعلم من التاريخ، عرف أن القيمة ليست في عدد الجنيهات، بل في قوتها الشرائية. فهمك للتضخم هو درعك لتحافظ على تعبك وشغلك. تذكر دائماً: "فلوسك يجب أن تعمل أكثر منك… فإذا بقيت نائمة في حساب بعائد 10% بينما التضخم 30%، فأنت تخسر 20% كل سنة دون أن تدرك ذلك!"</p>
+                </div>
+                <!-- END: Summary Section -->
+                
+                <div class="text-center mt-8 space-y-4">
+                    <button id="openInvestmentAdviceModal" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+                        ✨ احصل على نصيحة استثمارية مخصصة
+                    </button>
+                    <button id="openCertificateComparisonModal" class="bg-green-500 hover:bg-green-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+                        📊 قارن العوائد الاستثمارية
+                    </button>
+                    <button id="openLoanCalculatorModal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+                        🏦 حاسبة القروض بضمان الشهادة
+                    </button>
+                </div>
+            </section>
+            <!-- END: Part 3 - The Solution Section -->
+        </main>
+
+        <!-- START: Footer Section -->
+        <footer class="text-center mt-12 md:mt-16 border-t-2 border-blue-800 pt-6 md:pt-8">
+            <p class="text-sm mt-4 text-gray-400">تصميم وإعداد بواسطة: <span class="highlight-yellow">معلم</span></p>
+        </footer>
+        <!-- END: Footer Section -->
+
+    </div>
+
+    <!-- START: Investment Advice Modal -->
+    <div id="investmentAdviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalButton">&times;</span>
+            <h3 class="text-2xl font-bold mb-4 highlight-yellow">نصيحة استثمارية مخصصة</h3>
+            
+            <div class="input-group mb-4 text-right">
+                <label for="riskTolerance" class="mb-2">تحمل المخاطر:</label>
+                <select id="riskTolerance" class="w-full">
+                    <option value="منخفض جداً">منخفض جداً</option>
+                    <option value="منخفض">منخفض</option>
+                    <option value="متوسط" selected>متوسط</option>
+                    <option value="مرتفع">مرتفع</option>
+                    <option value="مرتفع جداً">مرتفع جداً</option>
+                </select>
+            </div>
+            
+            <div class="input-group mb-4 text-right">
+                <label for="investmentHorizon" class="mb-2">الأفق الاستثماري:</label>
+                <select id="investmentHorizon" class="w-full">
+                    <option value="أقل من سنة">أقل من سنة</option>
+                    <option value="1-3 سنوات">1-3 سنوات</option>
+                    <option value="3-5 سنوات" selected>3-5 سنوات</option>
+                    <option value="أكثر من 5 سنوات">أكثر من 5 سنوات</option>
+                </select>
+            </div>
+
+            <button id="getAdviceButton" class="modal-button">
+                احصل على النصيحة ✨
+            </button>
+
+            <div id="adviceResult" class="mt-6 text-right text-gray-200 text-base">
+                <!-- LLM advice will be displayed here -->
+            </div>
+            <div id="loadingSpinner" class="loading-spinner hidden"></div>
+        </div>
+    </div>
+    <!-- END: Investment Advice Modal -->
+
+    <!-- START: Certificate Comparison Modal -->
+    <div id="certificateComparisonModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeCertificateComparisonModalButton">&times;</span>
+            <h3 class="text-2xl font-bold mb-4 highlight-yellow">📊 مقارنة عوائد الشهادات (3 سنوات)</h3>
+            
+            <p class="text-gray-300 text-sm mb-4">قارن بين سيناريوهين للشهادات الاستثمارية على مدار 3 سنوات.</p>
+
+            <div id="certificateComparisonSection">
+                <div class="input-group mb-4 text-right">
+                    <label for="initialAmountComparison" class="mb-2">المبلغ الأولي (جنيه):</label>
+                    <input type="number" id="initialAmountComparison" value="100000" min="100" step="1000">
+                </div>
+
+                <h4 class="text-xl font-bold mb-3 highlight-green text-right">السيناريو الأول: فائدة سنوية مباشرة (تصرف آخر السنة)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="input-group mb-2 text-right">
+                        <label for="annualDirectRateYear1" class="mb-1">السنة الأولى (%):</label>
+                        <input type="number" id="annualDirectRateYear1" value="27" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-2 text-right">
+                        <label for="annualDirectRateYear2" class="mb-1">السنة الثانية (%):</label>
+                        <input type="number" id="annualDirectRateYear2" value="24" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-4 text-right">
+                        <label for="annualDirectRateYear3" class="mb-1">السنة الثالثة (%):</label>
+                        <input type="number" id="annualDirectRateYear3" value="22" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-4 text-right">
+                        <label for="payoutFrequencyScenario1" class="mb-2">وتيرة صرف الفائدة (السيناريو الأول):</label>
+                        <select id="payoutFrequencyScenario1" class="w-full">
+                            <option value="annually">سنوي</option>
+                            <option value="semiannually">نصف سنوي</option>
+                            <option value="quarterly">ربع سنوي</option>
+                            <option value="monthly">شهري</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h4 class="text-xl font-bold mb-3 highlight-green text-right">السيناريو الثاني: فائدة دورية مع إعادة استثمار</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="input-group mb-2 text-right">
+                        <label for="periodicRateYear1" class="mb-1">السنة الأولى (%):</label>
+                        <input type="number" id="periodicRateYear1" value="24" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-2 text-right">
+                        <label for="periodicRateYear2" class="mb-1">السنة الثانية (%):</label>
+                        <input type="number" id="periodicRate2" value="20" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-4 text-right">
+                        <label for="periodicRateYear3" class="mb-1">السنة الثالثة (%):</label>
+                        <input type="number" id="periodicRateYear3" value="18" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-4 text-right">
+                        <label for="payoutFrequency" class="mb-2">وتيرة صرف الفائدة الدورية (السيناريو الثاني):</label>
+                        <select id="payoutFrequency" class="w-full">
+                            <option value="monthly">شهري</option>
+                            <option value="quarterly">ربع سنوي</option>
+                            <option value="semiannually">نصف سنوي</option>
+                            <option value="annually">سنوي</option> <!-- Added annually option here -->
+                        </select>
+                    </div>
+                    <div class="input-group mb-4 text-right">
+                        <label for="dailyReinvestmentRate" class="mb-1">فائدة إعادة الاستثمار اليومية (%):</label>
+                        <input type="number" id="dailyReinvestmentRate" value="10" min="0" step="0.1">
+                    </div>
+                </div>
+
+                <button id="calculateCertificates" class="modal-button">
+                    احسب عوائد الشهادات ✨
+                </button>
+
+                <div id="certificateComparisonResult" class="mt-6 text-right text-gray-200 text-base">
+                    <!-- Certificate comparison results will be displayed here -->
+                </div>
+            </div>
+            <div id="comparisonLoadingSpinner" class="loading-spinner hidden"></div>
+        </div>
+    </div>
+    <!-- END: Certificate Comparison Modal -->
+
+    <!-- START: Loan Calculator Modal -->
+    <div id="loanCalculatorModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeLoanCalculatorModalButton">&times;</span>
+            <h3 class="text-2xl font-bold mb-4 highlight-yellow">  حاسبة القروض بضمان الشهادة</h3>
+            <p class="text-gray-300 text-sm mb-4">احسب وضع القرض بضمان شهادتك. (تأكد من حساب عوائد الشهادات أولاً)</p>
+            
+            <div id="loanScenarioSection">
+                <div class="input-group mb-4 text-right">
+                    <label for="initialAmountLoan" class="mb-2">المبلغ الأولي للشهادة (جنيه):</label>
+                    <input type="number" id="initialAmountLoan" value="100000" min="100" step="1000">
+                </div>
+                <div class="input-group mb-4 text-right">
+                    <label for="loanCertType" class="mb-2">نوع الشهادة للقرض:</label>
+                    <select id="loanCertType" class="w-full">
+                        <option value="scenario1">السيناريو الأول (فائدة سنوية مباشرة)</option>
+                        <option value="scenario2">السيناريو الثاني (فائدة دورية مع إعادة استثمار)</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="input-group mb-2 text-right">
+                        <label for="loanAnnualRate" class="mb-1">فائدة القرض السنوية (%):</label>
+                        <input type="number" id="loanAnnualRate" value="20" min="0" step="0.1">
+                    </div>
+                    <div class="input-group mb-4 text-right">
+                        <label for="loanDailyReinvestmentRate" class="mb-1">فائدة إعادة الاستثمار اليومية (%):</label>
+                        <input type="number" id="loanDailyReinvestmentRate" value="10" min="0" step="0.1">
+                    </div>
+                </div>
+
+                <button id="calculateLoanScenarioButton" class="modal-button">
+                    احسب وضع القرض 🏦
+                </button>
+
+                <div id="loanScenarioResult" class="mt-6 text-right text-gray-200 text-base">
+                    <!-- Loan scenario results and advice will be displayed here -->
+                </div>
+            </div>
+            <div id="loanCalculatorLoadingSpinner" class="loading-spinner hidden"></div>
+        </div>
+    </div>
+    <!-- END: Loan Calculator Modal -->
+
+    <!-- START: JavaScript Section -->
+    <script>
+        // Helper function to wrap long labels for Chart.js
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (typeof label !== 'string' || label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).length > maxLength) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine += (currentLine ? ' ' : '') + word;
+                }
+            });
+            lines.push(currentLine);
+            return lines;
+        };
+
+        // Helper function for Chart.js tooltip titles
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        let purchasingPowerChartInstance;
+        let investmentChartInstance;
+
+        // Global variables to store scenario results for loan calculation
+        let scenario1CertData = { rates: [], payoutFrequency: '' };
+        let scenario2CertData = { rates: [], payoutFrequency: '' };
+        let finalAmountScenario1Global = 0;
+        let finalAmountScenario2Global = 0;
+
+
+        // Data for "100 EGP from past = X EGP today"
+        // These values represent: 100 EGP from the given past year, what is its purchasing power equivalent in June 2025 EGP.
+        // Example: 100 EGP from 1900 is equivalent to 40000 EGP in June 2025 purchasing power.
+        const initialPurchasingPowerData = {
+            labels: ['1900', '1952', '2016', 'يونيو 2025'].map(wrapLabel),
+            originalData: [40000, 10000, 256, 100], 
+            datasets: [{
+                label: 'قيمة المبلغ اليوم (بالجنيه)',
+                data: [], 
+                borderColor: '#FFD166',
+                backgroundColor: 'rgba(255, 209, 102, 0.2)',
+                fill: true,
+                tension: 0.1
+            }]
+        };
+
+        // Function to update the purchasing power chart based on user input
+        const updatePurchasingPowerChart = (baseAmount) => {
+            const scaledData = initialPurchasingPowerData.originalData.map(value => (value / 100) * baseAmount);
+            purchasingPowerChartInstance.data.datasets[0].data = scaledData;
+            purchasingPowerChartInstance.update();
+            document.getElementById('baseAmountDisplay').textContent = new Intl.NumberFormat('ar-EG').format(baseAmount);
+            document.getElementById('baseAmountDisplay2').textContent = new Intl.NumberFormat('ar-EG').format(baseAmount);
+        };
+
+        // Data for "Shocking Comparison" - fixed values for 10,000 EGP in 2000
+        const initialInvestmentData = {
+            labels: ['ادخار نقدي "تحت البلاطة"', 'استثمار في الذهب'].map(wrapLabel),
+            // For 10,000 EGP in 2000:
+            // Cash value today (if 10,000 EGP cash in 2000 is 500 EGP today, then 10,000 EGP cash is 500 EGP today)
+            originalCashValue: 500, 
+            // Gold value today (10,000 EGP in 2000 = ~363.64 grams. 363.64 * 4750 EGP/gram = ~1,727,290 EGP)
+            originalGoldValue: 1727290, 
+            datasets: [{
+                label: 'القيمة النهائية في 2025 (بالجنيه)',
+                data: [],
+                backgroundColor: ['#FF6B6B', '#06D6A0'],
+                borderColor: ['#FF6B6B', '#06D6A0'],
+                borderWidth: 1
+            }]
+        };
+
+        // Initialize charts and set up event listeners when the window loads
+        window.onload = function() {
+            // Initialize Purchasing Power Chart
+            const ctxPurchasingPower = document.getElementById('purchasingPowerChart').getContext('2d');
+            if (ctxPurchasingPower) {
+                purchasingPowerChartInstance = new Chart(ctxPurchasingPower, {
+                    type: 'line',
+                    data: {
+                        labels: initialPurchasingPowerData.labels,
+                        datasets: [{
+                            label: 'قيمة المبلغ اليوم (بالجنيه)',
+                            data: initialPurchasingPowerData.originalData, // Initialize with data directly
+                            borderColor: '#FFD166',
+                            backgroundColor: 'rgba(255, 209, 102, 0.2)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'القيمة بالجنيه',
+                                    color: '#FFFFFF'
+                                },
+                                ticks: { color: '#FFFFFF' }
+                            },
+                            x: {
+                                ticks: { color: '#FFFFFF' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#FFFFFF'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: tooltipTitleCallback
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Failed to get context for purchasingPowerChart.');
+            }
+
+            // Initialize Investment Chart with fixed data
+            const ctxInvestment = document.getElementById('investmentChart').getContext('2d');
+            if (ctxInvestment) {
+                investmentChartInstance = new Chart(ctxInvestment, {
+                    type: 'bar',
+                    data: {
+                        labels: initialInvestmentData.labels,
+                        // Directly use the fixed values from initialInvestmentData
+                        datasets: [{
+                            label: 'القيمة النهائية في 2025 (بالجنيه)',
+                            data: [initialInvestmentData.originalCashValue, initialInvestmentData.originalGoldValue], 
+                            backgroundColor: ['#FF6B6B', '#06D6A0'],
+                            borderColor: ['#FF6B6B', '#06D6A0'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                type: 'logarithmic',
+                                title: {
+                                    display: true,
+                                    text: 'القيمة بالجنيه (مقياس لوغاريتمي)',
+                                    color: '#FFFFFF'
+                                },
+                                ticks: { 
+                                    color: '#FFFFFF',
+                                    callback: function(value, index, values) {
+                                        if (value === 1000000 || value === 100000 || value === 10000 || value === 1000 || value === 100 || value === 10) {
+                                            return new Intl.NumberFormat('ar-EG').format(value) + ' جنيه';
+                                        }
+                                        return ''; 
+                                    }
+                                }
+                            },
+                            y: {
+                                ticks: { color: '#FFFFFF', font: { size: 14 } }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: tooltipTitleCallback,
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.x !== null) {
+                                            label += new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(context.parsed.x);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Failed to get context for investmentChart.');
+            }
+
+            // Call initial updates for display spans
+            const baseAmountInput = document.getElementById('baseAmountInput');
+            
+            // Add null checks for these elements as well, as they are accessed on load
+            if (!baseAmountInput) { console.error("FATAL ERROR: Element with ID 'baseAmountInput' not found. Cannot initialize main charts."); return; }
+
+
+            updatePurchasingPowerChart(parseFloat(baseAmountInput.value));
+
+            // Event listeners for input fields
+            baseAmountInput.addEventListener('input', (e) => {
+                const newAmount = parseFloat(e.target.value);
+                if (!isNaN(newAmount) && newAmount > 0) {
+                    updatePurchasingPowerChart(newAmount);
+                } else {
+                    updatePurchasingPowerChart(0);
+                }
+            });
+
+            // START: Gemini API Integration Logic for Investment Advice Modal
+            const investmentAdviceModal = document.getElementById('investmentAdviceModal');
+            const openInvestmentAdviceModalButton = document.getElementById('openInvestmentAdviceModal');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const getAdviceButton = document.getElementById('getAdviceButton');
+            const riskToleranceSelect = document.getElementById('riskTolerance');
+            const investmentHorizonSelect = document.getElementById('investmentHorizon');
+            const adviceResultDiv = document.getElementById('adviceResult');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // Add null checks for these elements as well
+            if (!investmentAdviceModal) { console.error("FATAL ERROR: Element with ID 'investmentAdviceModal' not found."); return; }
+            if (!openInvestmentAdviceModalButton) { console.error("FATAL ERROR: Element with ID 'openInvestmentAdviceModal' not found."); return; }
+            if (!closeModalButton) { console.error("FATAL ERROR: Element with ID 'closeModalButton' not found."); return; }
+            if (!getAdviceButton) { console.error("FATAL ERROR: Element with ID 'getAdviceButton' not found."); return; }
+            if (!riskToleranceSelect) { console.error("FATAL ERROR: Element with ID 'riskTolerance' not found."); return; }
+            if (!investmentHorizonSelect) { console.error("FATAL ERROR: Element with ID 'investmentHorizon' not found."); return; }
+            if (!adviceResultDiv) { console.error("FATAL ERROR: Element with ID 'adviceResult' not found."); return; }
+            if (!loadingSpinner) { console.error("FATAL ERROR: Element with ID 'loadingSpinner' not found."); return; }
+
+
+            openInvestmentAdviceModalButton.addEventListener('click', () => {
+                investmentAdviceModal.style.display = 'flex';
+                adviceResultDiv.innerHTML = ''; // Clear previous results
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                investmentAdviceModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == investmentAdviceModal) {
+                    investmentAdviceModal.style.display = 'none';
+                }
+            });
+
+            getAdviceButton.addEventListener('click', async () => {
+                const riskTolerance = riskToleranceSelect.value;
+                const investmentHorizon = investmentHorizonSelect.value;
+
+                adviceResultDiv.innerHTML = ''; // Clear previous advice
+                loadingSpinner.classList.remove('hidden'); // Show loading spinner
+
+                const prompt = `بصفتك مستشارًا مالياً في مصر، قدم نصيحة استثمارية موجزة لشخص لديه تحمل مخاطر ${riskTolerance} وأفق استثماري ${investmentHorizon}. ركز على الأصول التي تحمي من التضخم وتناسب السوق المصري. لا تذكر أي أرقام أو عوائد محددة.`;
+
+                console.log('Sending prompt to Gemini API:', prompt); // Debugging: Log the prompt
+                // Log environment variables for debugging API key issue
+                console.log('__app_id:', typeof __app_id !== 'undefined' ? __app_id : 'undefined');
+                console.log('__firebase_config:', typeof __firebase_config !== 'undefined' ? __firebase_config : 'undefined');
+                console.log('__initial_auth_token:', typeof __initial_auth_token !== 'undefined' ? 'present' : 'undefined');
+
+
+                try {
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    // The Canvas environment injects the API key automatically when this is an empty string.
+                    // If you are running this file directly from your desktop, you will need to
+                    // obtain your own Gemini API key and insert it here:
+                    const apiKey = "AIzaSyClYKG-Q_omGCwT_Ug-cTU6fQeI4m8flP4"; // IMPORTANT: If running locally, replace with your actual Gemini API key, e.g., "YOUR_GEMINI_API_KEY_HERE"
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    // If apiKey is still empty here, it means it's running locally without a manually inserted key
+                    // and the Canvas environment is not intercepting the fetch.
+                    if (apiKey === "") {
+                        adviceResultDiv.innerHTML = '<p class="text-red-400">خطأ في مفتاح API: يبدو أنك تقوم بتشغيل الملف محلياً. يرجى الحصول على مفتاح Gemini API الخاص بك وإدخاله يدوياً في الكود (ابحث عن `const apiKey = "";` واستبدلها بمفتاحك).</p>';
+                        console.error('API Key is missing. If running locally, please insert your Gemini API key into the `apiKey` variable in the code.');
+                        loadingSpinner.classList.add('hidden');
+                        return;
+                    }
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    console.log('Gemini API response status:', response.status); // Debugging: Log response status
+                    const result = await response.json();
+                    console.log('Gemini API response data:', result); // Debugging: Log full response data
+                    
+                    if (response.ok && result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        adviceResultDiv.innerHTML = `<p>${text}</p>`;
+                    } else {
+                        let errorMessage = 'عذراً، لم أتمكن من الحصول على نصيحة استثمارية. يرجى المحاولة مرة أخرى.';
+                        if (result.error && result.error.message) {
+                            errorMessage = `خطأ من API: ${result.error.message}. يرجى التأكد من أن مفتاح API صحيح أو الاتصال بالدعم.`;
+                        } else if (!response.ok) {
+                            errorMessage = `خطأ في الشبكة أو الخادم: الحالة ${response.status}. يرجى التحقق من اتصالك بالإنترنت.`;
+                        }
+                        console.error('Gemini API returned an error or unexpected structure:', result); // More detailed error logging
+                        adviceResultDiv.innerHTML = `<p class="text-red-400">${errorMessage}</p>`;
+                    }
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error); // Debugging: Log the actual error object
+                    adviceResultDiv.innerHTML = '<p class="text-red-400">حدث خطأ أثناء جلب النصيحة الاستثمارية. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.</p>';
+                    } finally {
+                    loadingSpinner.classList.add('hidden'); // Hide loading spinner
+                }
+            });
+            // END: Gemini API Integration Logic for Investment Advice Modal
+
+            // START: Certificate Comparison Modal Logic
+            const certificateComparisonModal = document.getElementById('certificateComparisonModal');
+            const openCertificateComparisonModalButton = document.getElementById('openCertificateComparisonModal');
+            const closeCertificateComparisonModalButton = document.getElementById('closeCertificateComparisonModalButton');
+            
+            const certificateComparisonResultDiv = document.getElementById('certificateComparisonResult');
+            const comparisonLoadingSpinner = document.getElementById('comparisonLoadingSpinner');
+            const calculateCertificatesButton = document.getElementById('calculateCertificates');
+
+            // Add null checks for these elements
+            if (!certificateComparisonModal) { console.error("FATAL ERROR: Element with ID 'certificateComparisonModal' not found."); return; }
+            if (!openCertificateComparisonModalButton) { console.error("FATAL ERROR: Element with ID 'openCertificateComparisonModal' not found."); return; }
+            if (!closeCertificateComparisonModalButton) { console.error("FATAL ERROR: Element with ID 'closeCertificateComparisonModalButton' not found."); return; }
+            if (!certificateComparisonResultDiv) { console.error("FATAL ERROR: Element with ID 'certificateComparisonResultDiv' not found."); return; }
+            if (!comparisonLoadingSpinner) { console.error("FATAL ERROR: Element with ID 'comparisonLoadingSpinner' not found."); return; }
+            if (!calculateCertificatesButton) { console.error("FATAL ERROR: Element with ID 'calculateCertificates' not found."); return; }
+
+
+            openCertificateComparisonModalButton.addEventListener('click', () => {
+                certificateComparisonModal.style.display = 'flex';
+                certificateComparisonResultDiv.innerHTML = ''; // Clear previous results
+            });
+
+            closeCertificateComparisonModalButton.addEventListener('click', () => {
+                certificateComparisonModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == certificateComparisonModal) {
+                    certificateComparisonModal.style.display = 'none';
+                }
+            });
+
+            // Helper to get number of payouts per year based on frequency
+            const getPayoutPeriodsPerYear = (frequency) => {
+                switch (frequency) {
+                    case 'annually': return 1;
+                    case 'semiannually': return 2;
+                    case 'quarterly': return 4;
+                    case 'monthly': return 12;
+                    default: return 1; // Default to annually
+                }
+            };
+
+            // Helper to translate frequency to Arabic
+            const translateFrequencyToArabic = (frequency) => {
+                switch (frequency) {
+                    case 'annually': return 'سنوي';
+                    case 'semiannually': return 'نصف سنوي';
+                    case 'quarterly': return 'ربع سنوي';
+                    case 'monthly': return 'شهري';
+                    default: return '';
+                }
+            };
+
+            // Function to calculate Scenario 1 and Scenario 2
+            calculateCertificatesButton.addEventListener('click', () => {
+                console.log("Calculate Certificates button clicked.");
+                certificateComparisonResultDiv.innerHTML = '';
+                comparisonLoadingSpinner.classList.remove('hidden');
+
+                try {
+                    const initialAmountComparisonInput = document.getElementById('initialAmountComparison');
+                    if (!initialAmountComparisonInput) { throw new Error("Element with ID 'initialAmountComparison' not found."); }
+                    
+                    const annualDirectRateYear1Input = document.getElementById('annualDirectRateYear1');
+                    if (!annualDirectRateYear1Input) { throw new Error("Element with ID 'annualDirectRateYear1' not found."); }
+                    const annualDirectRateYear2Input = document.getElementById('annualDirectRateYear2');
+                    if (!annualDirectRateYear2Input) { throw new Error("Element with ID 'annualDirectRateYear2' not found."); }
+                    const annualDirectRateYear3Input = document.getElementById('annualDirectRateYear3');
+                    if (!annualDirectRateYear3Input) { throw new Error("Element with ID 'annualDirectRateYear3' not found."); }
+                    
+                    const payoutFrequencyScenario1Select = document.getElementById('payoutFrequencyScenario1');
+                    if (!payoutFrequencyScenario1Select) { throw new Error("Element with ID 'payoutFrequencyScenario1' not found."); }
+                    
+                    const periodicRateYear1Input = document.getElementById('periodicRateYear1');
+                    if (!periodicRateYear1Input) { throw new Error("Element with ID 'periodicRateYear1' not found."); }
+                    const periodicRateYear2Input = document.getElementById('periodicRate2'); // Correct ID here
+                    if (!periodicRateYear2Input) { throw new Error("Element with ID 'periodicRate2' not found."); } // Correct variable name in check
+                    const periodicRateYear3Input = document.getElementById('periodicRateYear3'); // Correct ID here
+                    if (!periodicRateYear3Input) { throw new Error("Element with ID 'periodicRateYear3' not found."); } // Correct variable name in check
+                    
+                    const payoutFrequencySelect = document.getElementById('payoutFrequency');
+                    if (!payoutFrequencySelect) { throw new Error("Element with ID 'payoutFrequency' not found."); }
+                    
+                    const dailyReinvestmentRateInput = document.getElementById('dailyReinvestmentRate');
+                    if (!dailyReinvestmentRateInput) { throw new Error("Element with ID 'dailyReinvestmentRate' not found."); }
+
+                    const initialAmount = parseFloat(initialAmountComparisonInput.value);
+                    const annualDirectRates = [
+                        parseFloat(annualDirectRateYear1Input.value),
+                        parseFloat(annualDirectRateYear2Input.value),
+                        parseFloat(annualDirectRateYear3Input.value)
+                    ];
+                    const periodicRates = [
+                        parseFloat(periodicRateYear1Input.value),
+                        parseFloat(periodicRateYear2Input.value), // Corrected variable name
+                        parseFloat(periodicRateYear3Input.value)  // Corrected variable name
+                    ];
+                    const payoutFrequencyScenario1 = payoutFrequencyScenario1Select.value;
+                    const payoutFrequency = payoutFrequencySelect.value;
+                    const dailyReinvestmentRate = parseFloat(dailyReinvestmentRateInput.value);
+
+                    if (isNaN(initialAmount) || initialAmount <= 0 || 
+                        annualDirectRates.some(isNaN) || periodicRates.some(isNaN) || isNaN(dailyReinvestmentRate)) {
+                        throw new Error("الرجاء إدخال أرقام صحيحة لجميع حقول الشهادات.");
+                    }
+
+                    // Scenario 1 Calculation: Simple interest on principal, paid out periodically, then reinvested daily.
+                    let totalReinvestedEarningsScenario1 = 0;
+                    const dailyReinvestmentRateFactor = (1 + dailyReinvestmentRate / 100 / 365);
+                    const payoutsPerYearScenario1 = getPayoutPeriodsPerYear(payoutFrequencyScenario1);
+                    const daysBetweenPayoutsScenario1 = 365 / payoutsPerYearScenario1;
+
+                    for (let year = 0; year < 3; year++) {
+                        const currentAnnualRate = annualDirectRates[year];
+                        const annualSimpleInterest = initialAmount * (currentAnnualRate / 100);
+                        const payoutAmountPerPeriod = annualSimpleInterest / payoutsPerYearScenario1;
+                        
+                        if (isNaN(payoutAmountPerPeriod) || !isFinite(payoutAmountPerPeriod)) {
+                            throw new Error(`خطأ في حساب الفائدة السنوية للسيناريو الأول في السنة ${year + 1}.`);
+                        }
+
+                        for (let i = 0; i < payoutsPerYearScenario1; i++) {
+                            const daysToThisPayout = (year * 365) + ((i + 1) * daysBetweenPayoutsScenario1);
+                            const daysRemainingForCompounding = (3 * 365) - daysToThisPayout;
+                            const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
+                            
+                            const futureValueOfPayout = payoutAmountPerPeriod * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
+                            if (isNaN(futureValueOfPayout) || !isFinite(futureValueOfPayout)) {
+                                throw new Error(`خطأ في حساب القيمة المستقبلية للدفعة في السيناريو الأول، السنة ${year + 1}، الدفعة ${i + 1}.`);
+                            }
+                            totalReinvestedEarningsScenario1 += futureValueOfPayout;
+                        }
+                    }
+                    finalAmountScenario1Global = initialAmount + totalReinvestedEarningsScenario1;
+                    const roiScenario1 = ((finalAmountScenario1Global - initialAmount) / initialAmount) * 100;
+                    const cagrScenario1 = (Math.pow(finalAmountScenario1Global / initialAmount, 1/3) - 1) * 100;
+
+                    // Scenario 2 Calculation: Simple interest on principal, paid out periodically, then reinvested daily.
+                    let totalReinvestedEarningsScenario2 = 0;
+                    const payoutsPerYearScenario2 = getPayoutPeriodsPerYear(payoutFrequency);
+                    const daysBetweenPayoutsScenario2 = 365 / payoutsPerYearScenario2;
+
+                    for (let year = 0; year < 3; year++) {
+                        const annualPeriodicRate = periodicRates[year];
+                        const annualSimpleInterestForScenario2 = initialAmount * (annualPeriodicRate / 100); 
+                        const payoutThisPeriod = annualSimpleInterestForScenario2 / payoutsPerYearScenario2;
+                        
+                        if (isNaN(payoutThisPeriod) || !isFinite(payoutThisPeriod)) {
+                            throw new Error(`خطأ في حساب الفائدة السنوية للسيناريو الثاني في السنة ${year + 1}.`);
+                        }
+
+                        for (let i = 0; i < payoutsPerYearScenario2; i++) {
+                            const daysToThisPayout = (year * 365) + ((i + 1) * daysBetweenPayoutsScenario2);
+                            const daysRemainingForCompounding = (3 * 365) - daysToThisPayout;
+                            const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
+
+                            const futureValueOfPayout = payoutThisPeriod * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
+                            if (isNaN(futureValueOfPayout) || !isFinite(futureValueOfPayout)) {
+                                throw new Error(`خطأ في حساب القيمة المستقبلية للدفعة في السيناريو الثاني، السنة ${year + 1}، الدفعة ${i + 1}.`);
+                            }
+                            totalReinvestedEarningsScenario2 += futureValueOfPayout;
+                        }
+                    }
+                    finalAmountScenario2Global = initialAmount + totalReinvestedEarningsScenario2;
+
+                    const roiScenario2 = ((finalAmountScenario2Global - initialAmount) / initialAmount) * 100;
+                    const cagrScenario2 = (Math.pow(finalAmountScenario2Global / initialAmount, 1/3) - 1) * 100;
+
+                    // Get Arabic frequency for Scenario 1
+                    const arabicPayoutFrequencyScenario1 = translateFrequencyToArabic(payoutFrequencyScenario1);
+                    const arabicPayoutFrequencyScenario2 = translateFrequencyToArabic(payoutFrequency);
+
+
+                    let resultHtml = `
+                        <p class="mb-2">المبلغ الأولي: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(initialAmount)}</p>
+                        <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الأول - فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1}):</strong></p>
+                        <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario1Global)}</p>
+                        <p class="text-base mb-2">ROI: ${roiScenario1.toFixed(2)}%</p>
+                        <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario1.toFixed(2)}%</p>
+
+                        <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثاني - فائدة دورية مع إعادة استثمار):</strong></p>
+                        <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario2Global)}</p>
+                        <p class="text-base mb-2">ROI: ${roiScenario2.toFixed(2)}%</p>
+                        <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario2.toFixed(2)}%</p>
+                    `;
+
+                    // Store all relevant data for loan calculation based on user's choice
+                    scenario1CertData = { rates: annualDirectRates, payoutFrequency: payoutFrequencyScenario1 };
+                    scenario2CertData = { rates: periodicRates, payoutFrequency: payoutFrequency };
+                    
+                    // Determine the best scenario between 1 and 2 (for display purposes only)
+                    let bestScenarioText = '';
+                    if (finalAmountScenario1Global > finalAmountScenario2Global) {
+                        bestScenarioText = `السيناريو الأول (فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1})`;
+                    } else if (finalAmountScenario2Global > finalAmountScenario1Global) {
+                        bestScenarioText = `السيناريو الثاني (فائدة دورية تصرف ${arabicPayoutFrequencyScenario2} مع إعادة استثمار)`;
+                    } else {
+                        bestScenarioText = 'كلا السيناريوهين متساويين في العائد';
+                    }
+
+                    resultHtml += `<p class="text-green-400 font-bold text-xl">أفضل سيناريو بين الشهادات: ${bestScenarioText}!</p>`;
+
+                    certificateComparisonResultDiv.innerHTML = resultHtml;
+                    console.log("Certificate comparison completed.");
+
+                } catch (error) {
+                    console.error("An error occurred during certificate comparison calculation:", error);
+                    certificateComparisonResultDiv.innerHTML = `<p class="text-red-400">حدث خطأ أثناء حساب مقارنة الشهادات: ${error.message}. يرجى مراجعة المدخلات والمحاولة مرة أخرى.</p>`;
+                } finally {
+                    comparisonLoadingSpinner.classList.add('hidden');
+                }
+            });
+            // END: Certificate Comparison Modal Logic
+
+            // START: Loan Calculator Modal Logic
+            const loanCalculatorModal = document.getElementById('loanCalculatorModal');
+            const openLoanCalculatorModalButton = document.getElementById('openLoanCalculatorModal');
+            const closeLoanCalculatorModalButton = document.getElementById('closeLoanCalculatorModalButton');
+            const loanCalculatorLoadingSpinner = document.getElementById('loanCalculatorLoadingSpinner');
+            const calculateLoanScenarioButton = document.getElementById('calculateLoanScenarioButton');
+            const loanScenarioResultDiv = document.getElementById('loanScenarioResult');
+
+            // Add null checks for these elements
+            if (!loanCalculatorModal) { console.error("FATAL ERROR: Element with ID 'loanCalculatorModal' not found."); return; }
+            if (!openLoanCalculatorModalButton) { console.error("FATAL ERROR: Element with ID 'openInvestmentAdviceModal' not found."); return; }
+            if (!closeLoanCalculatorModalButton) { console.error("FATAL ERROR: Element with ID 'closeLoanCalculatorModalButton' not found."); return; }
+            if (!loanCalculatorLoadingSpinner) { console.error("FATAL ERROR: Element with ID 'loanCalculatorLoadingSpinner' not found."); return; }
+            if (!calculateLoanScenarioButton) { console.error("FATAL ERROR: Element with ID 'calculateLoanScenarioButton' not found."); return; }
+            if (!loanScenarioResultDiv) { console.error("FATAL ERROR: Element with ID 'loanScenarioResultDiv' not found."); return; }
+
+            // Elements within the loan calculator modal
+            const initialAmountLoanInput = document.getElementById('initialAmountLoan');
+            const loanCertTypeSelect = document.getElementById('loanCertType');
+            const loanAnnualRateInput = document.getElementById('loanAnnualRate');
+            const loanDailyReinvestmentRateInput = document.getElementById('loanDailyReinvestmentRate');
+
+            if (!initialAmountLoanInput) { console.error("FATAL ERROR: Element with ID 'initialAmountLoan' not found."); return; }
+            if (!loanCertTypeSelect) { console.error("FATAL ERROR: Element with ID 'loanCertType' not found."); return; }
+            if (!loanAnnualRateInput) { console.error("FATAL ERROR: Element with ID 'loanAnnualRate' not found."); return; }
+            if (!loanDailyReinvestmentRateInput) { console.error("FATAL ERROR: Element with ID 'loanDailyReinvestmentRate' not found."); return; }
+
+
+            openLoanCalculatorModalButton.addEventListener('click', () => {
+                loanCalculatorModal.style.display = 'flex';
+                loanScenarioResultDiv.innerHTML = ''; // Clear previous results
+            });
+
+            closeLoanCalculatorModalButton.addEventListener('click', () => {
+                loanCalculatorModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == loanCalculatorModal) {
+                    loanCalculatorModal.style.display = 'none';
+                }
+            });
+
+            // Function to calculate Scenario 3 (Loan)
+            calculateLoanScenarioButton.addEventListener('click', () => {
+                console.log("Calculate Loan Scenario button clicked.");
+                loanScenarioResultDiv.innerHTML = '';
+                loanCalculatorLoadingSpinner.classList.remove('hidden');
+
+                try {
+                    const initialAmount = parseFloat(initialAmountLoanInput.value);
+                    const loanAnnualRate = parseFloat(loanAnnualRateInput.value);
+                    const dailyReinvestmentRate = parseFloat(loanDailyReinvestmentRateInput.value);
+                    const loanCertType = loanCertTypeSelect.value; // Get selected certificate type for loan
+
+                    if (isNaN(initialAmount) || initialAmount <= 0 || isNaN(loanAnnualRate) || isNaN(dailyReinvestmentRate)) {
+                        throw new Error("الرجاء إدخال أرقام صحيحة لجميع حقول القرض وإعادة الاستثمار.");
+                    }
+
+                    let certRatesForLoan = [];
+                    let certPayoutFrequencyForLoan = '';
+
+                    if (loanCertType === 'scenario1') {
+                        certRatesForLoan = scenario1CertData.rates;
+                        certPayoutFrequencyForLoan = scenario1CertData.payoutFrequency;
+                    } else if (loanCertType === 'scenario2') {
+                        certRatesForLoan = scenario2CertData.rates;
+                        certPayoutFrequencyForLoan = scenario2CertData.payoutFrequency;
+                    }
+
+                    if (certRatesForLoan.length === 0 || certPayoutFrequencyForLoan === '') {
+                        throw new Error("يرجى حساب مقارنة الشهادات أولاً في النافذة الأخرى لتحديد نوع الشهادة للقرض.");
+                    }
+
+                    const certPeriodsPerYearForLoan = getPayoutPeriodsPerYear(certPayoutFrequencyForLoan);
+                    
+                    // Scenario 3 Calculation: Certificate with loan, periodic payouts, and reinvestment of net cash flow
+                    let totalReinvestedSurplusesScenario3 = 0;
+                    let totalUserContributionScenario3 = 0;
+                    const loanPrincipal = initialAmount * 0.90; // 90% of certificate value
+                    const loanTermMonths = 3 * 12; // 3 years fixed
+                    const loanMonthlyRate = loanAnnualRate / 100 / 12;
+
+                    let monthlyLoanInstallment = 0;
+                    if (loanMonthlyRate > 0) {
+                        monthlyLoanInstallment = (loanPrincipal * loanMonthlyRate) / (1 - Math.pow(1 + loanMonthlyRate, -loanTermMonths));
+                    } else {
+                        monthlyLoanInstallment = loanPrincipal / loanTermMonths;
+                    }
+                    
+                    if (isNaN(monthlyLoanInstallment) || !isFinite(monthlyLoanInstallment)) {
+                        throw new Error("خطأ في حساب قسط القرض الشهري. يرجى مراجعة نسبة فائدة القرض.");
+                    }
+                    console.log(`Scenario 3 - Loan Principal: ${loanPrincipal.toFixed(2)}, Monthly Loan Rate: ${(loanMonthlyRate*100).toFixed(4)}%, Monthly Installment: ${monthlyLoanInstallment.toFixed(2)}`);
+                    
+                    const dailyReinvestmentRateFactor = (1 + dailyReinvestmentRate / 100 / 365);
+
+
+                    // Monthly loop for 3 years (36 months)
+                    for (let month = 0; month < loanTermMonths; month++) {
+                        const currentYearIndex = Math.floor(month / 12);
+                        // Ensure currentYearIndex does not exceed array bounds
+                        if (currentYearIndex >= certRatesForLoan.length) {
+                            console.warn(`Year index ${currentYearIndex} out of bounds for certRatesForLoan. Using last available rate.`);
+                            // Fallback to the last available rate if year index is out of bounds
+                            certRatesForLoan[currentYearIndex] = certRatesForLoan[certRatesForLoan.length - 1];
+                        }
+                        const currentAnnualCertRate = certRatesForLoan[currentYearIndex]; // Certificate rate from selected scenario
+
+                        let periodicCertIncome = 0;
+                        // Check if it's a payout period for the certificate
+                        if (certPeriodsPerYearForLoan > 0 && (month % (12 / certPeriodsPerYearForLoan) === 0)) {
+                            periodicCertIncome = initialAmount * (currentAnnualCertRate / 100) / certPeriodsPerYearForLoan;
+                        }
+                        if (isNaN(periodicCertIncome) || !isFinite(periodicCertIncome)) {
+                            throw new Error(`خطأ في حساب العائد الدوري للشهادة في السيناريو الثالث، الشهر ${month + 1}.`);
+                        }
+
+                        const netCashFlowThisMonth = periodicCertIncome - monthlyLoanInstallment;
+
+                        console.log(`Scenario 3 - Month ${month + 1}: Cert Income = ${periodicCertIncome.toFixed(2)}, Loan Installment = ${monthlyLoanInstallment.toFixed(2)}, Net Cash Flow = ${netCashFlowThisMonth.toFixed(2)}`);
+
+                        if (netCashFlowThisMonth > 0) {
+                            // Surplus: Reinvest this amount daily from this month until the end of 3 years
+                            const daysPassed = (month + 1) * (365 / 12); // Approximate days passed until end of this month
+                            const daysRemainingForCompounding = (3 * 365) - daysPassed;
+                            const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
+                            
+                            const futureValueOfSurplus = netCashFlowThisMonth * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
+                            if (isNaN(futureValueOfSurplus) || !isFinite(futureValueOfSurplus)) {
+                                throw new Error(`خطأ في حساب القيمة المستقبلية للفائض في السيناريو الثالث، الشهر ${month + 1}.`);
+                            }
+                            totalReinvestedSurplusesScenario3 += futureValueOfSurplus;
+                            console.log(`  Surplus Reinvested: Days Remaining = ${actualDaysRemaining.toFixed(0)}, FV of Surplus = ${futureValueOfSurplus.toFixed(2)}`);
+                        } else {
+                            // Deficit: User adds this amount from pocket
+                            totalUserContributionScenario3 += Math.abs(netCashFlowThisMonth);
+                            console.log(`  Deficit: User contributes ${Math.abs(netCashFlowThisMonth).toFixed(2)}`);
+                        }
+                    }
+
+                    const finalAmountScenario3 = initialAmount + totalReinvestedSurplusesScenario3; // Certificate principal returned + reinvested surpluses
+                    const totalInvestmentScenario3 = initialAmount + totalUserContributionScenario3; // Initial certificate + user's added money
+
+                    if (totalInvestmentScenario3 <= 0) {
+                        throw new Error("إجمالي الاستثمار للسيناريو الثالث غير صالح للحساب (قد يكون صفر أو أقل).");
+                    }
+
+                    const roiScenario3 = ((finalAmountScenario3 - totalInvestmentScenario3) / totalInvestmentScenario3) * 100;
+                    const cagrScenario3 = (Math.pow(finalAmountScenario3 / totalInvestmentScenario3, 1/3) - 1) * 100;
+                    console.log("Scenario 3 Results:", { finalAmountScenario3: finalAmountScenario3.toFixed(2), totalUserContributionScenario3: totalUserContributionScenario3.toFixed(2), roiScenario3: roiScenario3.toFixed(2), cagrScenario3: cagrScenario3.toFixed(2) });
+
+                    // Get Arabic frequency for the selected loan certificate type
+                    const arabicLoanCertPayoutFrequency = translateFrequencyToArabic(certPayoutFrequencyForLoan);
+
+                    let loanResultHtml = `
+                        <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثالث - شهادة بقرض بضمان شهادة تصرف ${arabicLoanCertPayoutFrequency}):</strong></p>
+                        <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario3)}</p>
+                        <p class="text-base mb-2">إجمالي مساهمة المستخدم الإضافية: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(totalUserContributionScenario3.toFixed(2))}</p>
+                        <p class="text-base mb-2">ROI: ${roiScenario3.toFixed(2)}%</p>
+                        <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario3.toFixed(2)}%</p>
+                    `;
+
+                    // Provide advice on whether to take the loan
+                    const maxFinalAmountOfCertificates = Math.max(finalAmountScenario1Global, finalAmountScenario2Global);
+                    let loanAdvice = '';
+
+                    // Compare the final value of scenario 3 against the best of scenario 1/2
+                    if (finalAmountScenario3 > maxFinalAmountOfCertificates && totalUserContributionScenario3 <= (initialAmount * 0.05)) { // Small user contribution tolerance
+                        loanAdvice = '<p class="text-green-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو قد يكون مفيداً، حيث أدى إلى عائد نهائي أعلى مع مساهمة إضافية محدودة.</p>';
+                    } else if (finalAmountScenario3 > maxFinalAmountOfCertificates && totalUserContributionScenario3 > (initialAmount * 0.05)) {
+                        loanAdvice = '<p class="text-yellow-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو أدى إلى عائد نهائي أعلى، ولكن تطلب مساهمة إضافية كبيرة. يرجى مراجعة قدرتك على تغطية هذه المساهمات.</p>';
+                    }
+                    else if (finalAmountScenario3 < maxFinalAmountOfCertificates) {
+                        loanAdvice = '<p class="text-red-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو أدى إلى عائد نهائي أقل. قد لا يكون الخيار الأمثل لك.</p>';
+                    } else {
+                        loanAdvice = '<p class="text-gray-400 font-bold text-xl">نصيحة: العائد من هذا السيناريو قريب من أفضل سيناريوهات الشهادات الأخرى. يرجى مراجعة التفاصيل لاتخاذ القرار.</p>';
+                    }
+
+                    loanResultHtml += loanAdvice;
+                    loanScenarioResultDiv.innerHTML = loanResultHtml;
+                    console.log("Loan scenario calculation completed and advice displayed.");
+
+                } catch (error) {
+                    console.error("An error occurred during loan scenario calculation:", error);
+                    loanScenarioResultDiv.innerHTML = `<p class="text-red-400">حدث خطأ أثناء حساب وضع القرض: ${error.message}. يرجى مراجعة المدخلات والمحاولة مرة أخرى.</p>`;
+                } finally {
+                    loanCalculatorLoadingSpinner.classList.add('hidden');
+                }
+            });
+            // END: Loan Calculator Modal Logic
+        };
+    </script>
+    <!-- END: JavaScript Section -->
+</body>
+</html>
+ 
