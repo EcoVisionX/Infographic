@@ -503,7 +503,7 @@
         <section class="mb-12 md:mb-16">
             <div class="card p-4 mb-8 text-center">
                 <p class="text-xl md:text-2xl font-bold highlight-yellow mb-2">معدل التضخم السنوي:</p>
-                <p id="currentInflationDate" class="text-lg md:text-xl font-bold text-gray-300 mb-2">آخر تحديث: <span id="dynamicUpdateDate"></span></p>
+                <p id="currentInflationDate" class="text-lg md:text-xl font-bold text-gray-300 mb-2">آخر تحديث: <span id="dynamicUpdateDate">يونيو 2025</span></p>
                 <div class="flex items-center justify-center gap-2">
                     <span id="inflationRateDisplay" class="text-2xl md:text-4xl font-black highlight-green">14.9</span>
                     <span class="text-2xl md:text-4xl font-black highlight-green">%</span>
@@ -658,7 +658,7 @@
                 <div id="certificateComparisonResult" class="mt-6 text-right text-gray-200 text-base">
                     <!-- Certificate comparison results will be displayed here -->
                 </div>
-                <button onclick="shareResult()" id="share-btn" class="modal-button hidden mt-4" aria-label="شارك النتائج مع الآخرين">
+                <button onclick="shareResult()" id="share-btn" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-xl transition duration-300 ease-in-out hidden mt-4" aria-label="شارك النتائج مع الآخرين">
                     &#x21E7; شارك وانصح غيرك!
                 </button>
             </div>
@@ -868,12 +868,13 @@
                 fetchedInvestmentData = await fetchInvestmentData();
 
                 // Update current inflation date display dynamically
-                const dynamicUpdateDateElement = document.getElementById('dynamicUpdateDate');
-                if (dynamicUpdateDateElement) {
-                    const currentDate = new Date();
-                    const options = { month: 'long', year: 'numeric' };
-                    dynamicUpdateDateElement.textContent = currentDate.toLocaleDateString('ar-EG', options);
-                }
+                // Removed dynamic update as per user request to keep it static for now
+                // const dynamicUpdateDateElement = document.getElementById('dynamicUpdateDate');
+                // if (dynamicUpdateDateElement) {
+                //     const currentDate = new Date();
+                //     const options = { month: 'long', year: 'numeric' };
+                //     dynamicUpdateDateElement.textContent = currentDate.toLocaleDateString('ar-EG', options);
+                // }
 
                 // Populate startYearInput dropdown
                 const startYearInputSelect = document.getElementById('startYearInput');
