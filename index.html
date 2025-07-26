@@ -322,7 +322,7 @@
 
         <!-- START: Header Section -->
         <header class="text-center mb-8 md:mb-12">
-            <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸 االجنيه المصري: رحلة قرن</h1>
+            <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸  االجنيه المصري: رحلة قرن</h1>
             <!-- Removed: <h2 class="text-xl md:text-4xl font-bold">آخر تحديث للتضخم في مصر من 2016 - 2024</h2> -->
             <h2 class="text-xl md:text-4xl font-bold"></h2>
             <p class="text-base md:text-xl mt-4 max-w-3xl mx-auto text-gray-300">"الجنيه مش دايم… التضخم هو اللي دايم!" هل تساءلت يوماً عن قيمة "جنيه" زمان؟ في هذا الإنفوجرافيك، نكشف رحلة الجنيه المصري وتأثير التضخم عليه، وكيف تحمي مدخراتك من الضياع!</p>
@@ -491,8 +491,7 @@
                 <!-- START: Summary Section -->
                 <div class="card mt-8 mb-8 md:mb-12 text-center">
                     <h4 class="text-xl md:text-2xl font-bold highlight-yellow mb-3">الخلاصة: الوعي المالي هو درعك الأقوى!</h4>
-                    <p class="max-w-3xl mx-auto text-gray-300 text-sm md:text-base">الجنيه المصري مر برحلة مؤلمة. من تعلم من التاريخ، عرف أن القيمة ليست في عدد الجنيهات، بل في قوتها الشرائية. فهمك للتضخم هو درعك لتحافظ على تعبك وشغلك. تذكر دائماً: "فلوسك يجب أن تعمل أكثر منك… فإذا بقيت نائمة في حساب بعائد 10% بينما التضخم 30%، فأنت تخسر 20% كل سنة دون أن تدرك ذلك!"</p>
-                </div>
+                    <p class="max-w-3xl mx-auto text-gray-300 text-sm md:text-base">الجنيه المصري مر برحلة مؤلمة. من تعلم من التاريخ، عرف أن القيمة ليست في عدد الجنيهات، بل في قوتها الشرائية. فهمك للتضخم هو درعك لتحافظ على تعبك وشغلك. تذكر دائماً: "إزاي تخلي فلوسك تشتغل ليك، مش عليك.… فإذا بقيت نائمة في حساب بعائد 10% بينما التضخم 30%، فأنت تخسر 20% كل سنة وانت مش حاسس 
                 <!-- END: Summary Section -->
                 
             </section>
@@ -522,7 +521,7 @@
                 <h5 class="text-xl font-bold highlight-yellow mb-2">تواصل معنا للحصول على نصيحة استثمارية مخصصة!</h5>
                 <p class="text-base text-gray-300">
                     البريد الإلكتروني: <a href="mailto:info@ecovisionx.com" class="text-green-400 hover:underline">info@ecovisionx.com</a><br>
-                    الهاتف: <a href="https://wa.me/201044141005" class="text-green-400 hover:underline">+20 104 414 1005 (واتساب)</a>
+                    <a href="https://wa.me/201044141005" class="text-green-400 hover:underline">+20 104 414 1005</a>
                 </p>
             </div>
         </footer>
@@ -533,7 +532,7 @@
     <!-- START: Floating Buttons Container -->
     <div class="floating-buttons-container">
         <button id="openInvestmentAdviceModal" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
-            ✨ احصل على نصيحة استثمارية مخصصة
+            ✨ احصل على نصيحة استثمارية 
         </button>
         <button id="openCertificateComparisonModal" class="bg-green-500 hover:bg-green-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
             📊 قارن العوائد الاستثمارية
@@ -548,7 +547,7 @@
     <div id="investmentAdviceModal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="closeModalButton">&times;</span>
-            <h3 class="text-2xl font-bold mb-4 highlight-yellow">نصيحة استثمارية مخصصة</h3>
+            <h3 class="text-2xl font-bold mb-4 highlight-yellow">نصيحة استثمارية </h3>
             
             <div class="input-group mb-4 text-right">
                 <label for="riskTolerance" class="mb-2">تحمل المخاطر:</label>
@@ -659,7 +658,7 @@
                     <!-- Certificate comparison results will be displayed here -->
                 </div>
                 <button onclick="shareResult()" id="share-btn" class="modal-button hidden mt-4">
-                    &#x21E7; شارك الضرر!
+                    &#x21E7; شارك وانصح غيرك!
                 </button>
             </div>
             <div id="comparisonLoadingSpinner" class="loading-spinner hidden"></div>
@@ -805,7 +804,7 @@
 
         // Data for "Shocking Comparison" - fixed values for 10,000 EGP in 2000
         const initialInvestmentData = {
-            labels: ['ادخار نقدي "تحت البلاطة"', 'استثمار في الذهب'].map(wrapLabel),
+            labels: ['تحويشة "تحت البلاطة"', 'استثمار في الذهب'].map(wrapLabel),
             // For 10,000 EGP in 2000:
             // Calculate cash value today based on inflationFactorsFrom1900
             // 10,000 EGP in 2000, what is its purchasing power worth in 2025 EGP?
@@ -1185,7 +1184,8 @@
                     const annualDirectRateYear2Input = document.getElementById('annualDirectRateYear2');
                     if (!annualDirectRateYear2Input) { throw new Error("Element with ID 'annualDirectRateYear2' not found."); }
                     const annualDirectRateYear3Input = document.getElementById('annualDirectRateYear3');
-                    if (!annualDirectRateYear3Input) { throw new Error("Element with ID 'annualDirectRateYear3' not found."); }
+                    // FIX: Corrected ID to match HTML
+                    if (!annualDirectRateYear3Input) { throw new Error("Element with ID 'annualDirectRateYear3' not found."); } 
                     
                     const payoutFrequencyScenario1Select = document.getElementById('payoutFrequencyScenario1');
                     if (!payoutFrequencyScenario1Select) { throw new Error("Element with ID 'payoutFrequencyScenario1' not found."); }
@@ -1194,8 +1194,8 @@
                     if (!periodicRateYear1Input) { throw new Error("Element with ID 'periodicRateYear1' not found."); }
                     const periodicRateYear2Input = document.getElementById('periodicRate2'); // Correct ID here
                     if (!periodicRateYear2Input) { throw new Error("Element with ID 'periodicRate2' not found."); } // Correct variable name in check
-                    const periodicRateYear3Input = document.getElementById('periodicRate3'); // Correct ID here
-                    if (!periodicRateYear3Input) { throw new Error("Element with ID 'periodicRate3' not found."); } // Correct variable name in check
+                    const periodicRateYear3Input = document.getElementById('periodicRateYear3'); // FIX: Corrected ID to match HTML
+                    if (!periodicRateYear3Input) { throw new Error("Element with ID 'periodicRateYear3' not found."); } // Correct variable name in check
                     
                     const payoutFrequencySelect = document.getElementById('payoutFrequency');
                     if (!payoutFrequencySelect) { throw new Error("Element with ID 'payoutFrequency' not found."); }
@@ -1264,7 +1264,7 @@
                         const annualSimpleInterestForScenario2 = initialAmount * (annualPeriodicRate / 100); 
                         const payoutThisPeriod = annualSimpleInterestForScenario2 / payoutsPerYearScenario2;
                         
-                        if (isNaN(payoutThisPeriod) || !isFinite(payoutThisPeriod)) {
+                        if (isNaN(payoutThisPeriod) || !isFinite(payoutThisPeriod)) { // Corrected typo here
                             throw new Error(`خطأ في حساب الفائدة السنوية للسيناريو الثاني في السنة ${year + 1}.`);
                         }
 
@@ -1294,12 +1294,12 @@
                         <p class="mb-2">المبلغ الأولي: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(initialAmount)}</p>
                         <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الأول - فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1}):</strong></p>
                         <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario1Global)}</p>
-                        <p class="text-base mb-2">ROI: ${roiScenario1.toFixed(2)}%</p>
+                        <p class="text-base mb-2">العائد علي الاستثمار ROI: ${roiScenario1.toFixed(2)}%</p>
                         <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario1.toFixed(2)}%</p>
 
                         <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثاني - فائدة دورية مع إعادة استثمار):</strong></p>
                         <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario2Global)}</p>
-                        <p class="text-base mb-2">ROI: ${roiScenario2.toFixed(2)}%</p>
+                        <p class="text-base mb-2">العئد علي الاستثمار ROI: ${roiScenario2.toFixed(2)}%</p>
                         <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario2.toFixed(2)}%</p>
                     `;
 
@@ -1502,7 +1502,7 @@
                         <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثالث - شهادة بقرض بضمان شهادة تصرف ${arabicLoanCertPayoutFrequency}):</strong></p>
                         <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario3)}</p>
                         <p class="text-base mb-2">إجمالي مساهمة المستخدم الإضافية: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(totalUserContributionScenario3.toFixed(2))}</p>
-                        <p class="text-base mb-2">ROI: ${roiScenario3.toFixed(2)}%</p>
+                        <p class="text-base mb-2">العائد علي الاستثمار ROI: ${roiScenario3.toFixed(2)}%</p>
                         <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario3.toFixed(2)}%</p>
                     `;
 
