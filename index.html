@@ -15,6 +15,7 @@
             font-family: 'Cairo', sans-serif;
             background-color: #073B4C; /* Base background */
             color: #FFFFFF;
+            padding-bottom: 100px; /* Add padding to body to prevent content from being hidden by fixed footer */
         }
         /* END: General Body Styles */
 
@@ -284,6 +285,35 @@
             margin-bottom: 2rem;
         }
         /* END: Section Specific Backgrounds */
+
+        /* START: Floating Buttons Container */
+        .floating-buttons-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #073B4C; /* Match body background */
+            padding: 1rem;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 50; /* Ensure it's above other content but below modals */
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* Space between buttons */
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+        }
+        .floating-buttons-container button {
+            flex-grow: 1; /* Allow buttons to grow and fill space */
+            max-width: 300px; /* Limit max width of each button */
+        }
+        @media (min-width: 768px) {
+            .floating-buttons-container {
+                padding: 1.5rem;
+            }
+            .floating-buttons-container button {
+                flex-grow: 0; /* Don't grow on larger screens */
+            }
+        }
+        /* END: Floating Buttons Container */
     </style>
 </head>
 <body class="antialiased">
@@ -293,19 +323,15 @@
         <!-- START: Header Section -->
         <header class="text-center mb-8 md:mb-12">
             <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸 االجنيه المصري: رحلة قرن</h1>
-            <h2 class="text-xl md:text-4xl font-bold">بين "اللص الصامت" و"الصديق الخفي"</h2>
+            <h2 class="text-xl md:text-4xl font-bold"></h2>
             <p class="text-base md:text-xl mt-4 max-w-3xl mx-auto text-gray-300">"الجنيه مش دايم… التضخم هو اللي دايم!" هل تساءلت يوماً عن قيمة "جنيه" زمان؟ في هذا الإنفوجرافيك، نكشف رحلة الجنيه المصري وتأثير التضخم عليه، وكيف تحمي مدخراتك من الضياع!</p>
         </header>
         <!-- END: Header Section -->
 
         <main>
-<!-- تحديث التضخم من البنك المركزي المصري -->
-<div class="bg-yellow-100 text-blue-900 rounded-lg shadow-md p-4 mb-6 mx-auto max-w-2xl text-center font-bold text-lg" style="border: 2px solid #FFD166;">
-  آخر تحديث للتضخم في مصر من البنك المركزي المصري: <span class="highlight-red">يونيو 2024 - 14.9%</span>
-</div>
             <!-- START: Part 1 - The Silent Thief Section -->
             <section id="the-silent-thief" class="mb-12 md:mb-16">
-                <h3 class="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8"><span class="highlight-red">الجزء الأول:</span> اللص الصامت... كيف أكل التضخم الجنيه!</h3>
+                <h3 class="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-8"><span class="highlight-red">الجزء الأول:</span> النار اللي بتحرق فلوسك... كيف أكل التضخم الجنيه!</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 text-center">
                     <div class="card">
@@ -323,10 +349,10 @@
                 </div>
 
                 <div class="card mb-8 md:mb-12">
-                    <h4 class="text-xl md:text-2xl font-bold mb-3 text-center">قيمة <span id="baseAmountDisplay">100</span> جنيه من الماضي تعادل اليوم</h4>
-                    <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح الفرق الهائل بين الاحتفاظ بمبلغ <span id="baseAmountDisplay2">100</span> جنيه من كل فترة زمنية، وما تعادله اليوم (يونيو 2025). لاحظ كيف تآكلت قيمتها بشكل دراماتيكي.</p>
+                    <h4 class="text-xl md:text-2xl font-bold mb-3 text-center">القوة الشرائية لمبلغ <span id="baseAmountDisplay">100</span> جنيه من عام 1900 عبر الزمن</h4>
+                    <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح كيف تآكلت القوة الشرائية لمبلغ <span id="baseAmountDisplay2">100</span> جنيه من عام 1900، وما يعادله من مبالغ في السنوات اللاحقة لشراء نفس كمية السلع والخدمات للحفاظ على نفس القوة الشرائية.</p>
                     <div class="input-group max-w-xs mx-auto">
-                        <label for="baseAmountInput" class="text-sm md:text-base">أدخل المبلغ القديم للمقارنة (جنيه):</label>
+                        <label for="baseAmountInput" class="text-sm md:text-base">أدخل مبلغ عام 1900 للمقارنة (جنيه):</label>
                         <input type="number" id="baseAmountInput" value="100" min="1" step="10">
                     </div>
                     <div class="chart-container">
@@ -464,28 +490,54 @@
                 </div>
                 <!-- END: Summary Section -->
                 
-                <div class="text-center mt-8 space-y-4">
-                    <button id="openInvestmentAdviceModal" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
-                        ✨ احصل على نصيحة استثمارية مخصصة
-                    </button>
-                    <button id="openCertificateComparisonModal" class="bg-green-500 hover:bg-green-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
-                        📊 قارن العوائد الاستثمارية
-                    </button>
-                    <button id="openLoanCalculatorModal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
-                        🏦 حاسبة القروض بضمان الشهادة
-                    </button>
-                </div>
             </section>
             <!-- END: Part 3 - The Solution Section -->
         </main>
 
+        <!-- START: Inflation Rate Section (Moved to the end) -->
+        <section class="mb-12 md:mb-16">
+            <div class="card p-4 mb-8 text-center">
+                <p class="text-xl md:text-2xl font-bold highlight-yellow mb-2">معدل التضخم السنوي:</p>
+                <p id="currentInflationDate" class="text-lg md:text-xl font-bold text-gray-300 mb-2">آخر تحديث: يونيو 2025</p>
+                <div class="flex items-center justify-center gap-2">
+                    <span id="inflationRateDisplay" class="text-2xl md:text-4xl font-black highlight-green">14.9</span>
+                    <span class="text-2xl md:text-4xl font-black highlight-green">%</span>
+                </div>
+                <p class="text-sm text-gray-400 mt-2">
+                    <span class="highlight-yellow">ملاحظة هامة:</span> هذا الرقم (14.9%) هو معدل تضخم توضيحي لنموذج البيانات، وقد لا يعكس آخر تحديث رسمي. للحصول على أحدث وأدق بيانات التضخم، يرجى الرجوع للمصادر الرسمية (مثل الجهاز المركزي للتعبئة العامة والإحصاء أو البنك المركزي المصري).
+                </p>
+            </div>
+        </section>
+        <!-- END: Inflation Rate Section -->
+
         <!-- START: Footer Section -->
         <footer class="text-center mt-12 md:mt-16 border-t-2 border-blue-800 pt-6 md:pt-8">
-            <p class="text-sm mt-4 text-gray-400">تصميم وإعداد بواسطة: <span class="highlight-yellow">معلم</span></p>
+            <p class="text-sm mt-4 text-gray-400">تصميم وإعداد بواسطة: <span class="highlight-yellow">EcoVisionX</span></p>
+            <div class="mt-4">
+                <h5 class="text-xl font-bold highlight-yellow mb-2">تواصل معنا للحصول على نصيحة استثمارية مخصصة!</h5>
+                <p class="text-base text-gray-300">
+                    البريد الإلكتروني: <a href="mailto:info@ecovisionx.com" class="text-green-400 hover:underline">info@ecovisionx.com</a><br>
+                    الهاتف: <a href="https://wa.me/201044141005" class="text-green-400 hover:underline">+20 104 414 1005 (واتساب)</a>
+                </p>
+            </div>
         </footer>
         <!-- END: Footer Section -->
 
     </div>
+
+    <!-- START: Floating Buttons Container -->
+    <div class="floating-buttons-container">
+        <button id="openInvestmentAdviceModal" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+            ✨ احصل على نصيحة استثمارية مخصصة
+        </button>
+        <button id="openCertificateComparisonModal" class="bg-green-500 hover:bg-green-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+            📊 قارن العوائد الاستثمارية
+        </button>
+        <button id="openLoanCalculatorModal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+            🏦 حاسبة القروض بضمان الشهادة
+        </button>
+    </div>
+    <!-- END: Floating Buttons Container -->
 
     <!-- START: Investment Advice Modal -->
     <div id="investmentAdviceModal" class="modal">
@@ -601,6 +653,9 @@
                 <div id="certificateComparisonResult" class="mt-6 text-right text-gray-200 text-base">
                     <!-- Certificate comparison results will be displayed here -->
                 </div>
+                <button onclick="shareResult()" id="share-btn" class="modal-button hidden mt-4">
+                    &#x21E7; شارك الضرر!
+                </button>
             </div>
             <div id="comparisonLoadingSpinner" class="loading-spinner hidden"></div>
         </div>
@@ -695,14 +750,14 @@
 
 
         // Data for "100 EGP from past = X EGP today"
-        // These values represent: 100 EGP from the given past year, what is its purchasing power equivalent in June 2025 EGP.
-        // Example: 100 EGP from 1900 is equivalent to 40000 EGP in June 2025 purchasing power.
+        // This data now represents: "Nominal EGP needed in that year to buy what 100 EGP bought in 1900"
+        // The first value (100) is the baseline for 1900.
         const initialPurchasingPowerData = {
-            labels: ['1900', '1952', '2016', 'يونيو 2025'].map(wrapLabel),
-            originalData: [40000, 10000, 256, 100], 
+            labels: ['1900', '1952', '2000', '2016', '2020', 'يونيو 2025'].map(wrapLabel), /* Added 2000 and 2020 */
+            originalData: [100, 400, 12000, 15625, 27000, 40000], /* Updated data points */
             datasets: [{
-                label: 'قيمة المبلغ اليوم (بالجنيه)',
-                data: [], 
+                label: 'المبلغ المطلوب (بالجنيه)',
+                data: [],
                 borderColor: '#FFD166',
                 backgroundColor: 'rgba(255, 209, 102, 0.2)',
                 fill: true,
@@ -738,6 +793,13 @@
 
         // Initialize charts and set up event listeners when the window loads
         window.onload = function() {
+            // Update current inflation date display
+            const currentInflationDateElement = document.getElementById('currentInflationDate');
+            if (currentInflationDateElement) {
+                // The user explicitly requested "آخر تحديث: يونيو 2025" and 14.9%
+                currentInflationDateElement.innerHTML = `آخر تحديث: يونيو 2025`;
+            }
+
             // Initialize Purchasing Power Chart
             const ctxPurchasingPower = document.getElementById('purchasingPowerChart').getContext('2d');
             if (ctxPurchasingPower) {
@@ -746,7 +808,7 @@
                     data: {
                         labels: initialPurchasingPowerData.labels,
                         datasets: [{
-                            label: 'قيمة المبلغ اليوم (بالجنيه)',
+                            label: 'المبلغ المطلوب (بالجنيه)', /* Updated label */
                             data: initialPurchasingPowerData.originalData, // Initialize with data directly
                             borderColor: '#FFD166',
                             backgroundColor: 'rgba(255, 209, 102, 0.2)',
@@ -762,7 +824,7 @@
                                 beginAtZero: true,
                                 title: {
                                     display: true,
-                                    text: 'القيمة بالجنيه',
+                                    text: 'المبلغ المطلوب بالجنيه', /* Updated label */
                                     color: '#FFFFFF'
                                 },
                                 ticks: { color: '#FFFFFF' }
@@ -840,12 +902,14 @@
                                 callbacks: {
                                     title: tooltipTitleCallback,
                                     label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.x !== null) {
-                                            label += new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(context.parsed.x);
+                                        let label = '';
+                                        // Custom label for "ادخار نقدي 'تحت البلاطة'"
+                                        if (context.dataIndex === 0) { 
+                                            label = 'القيمة الأصلية في 2000: 10,000 جنيه';
+                                            label += '\nالقيمة الحالية (يونيو 2025): ' + new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(context.parsed.x);
+                                        } else { // For "استثمار في الذهب"
+                                            label = 'القيمة الأصلية في 2000: 10,000 جنيه';
+                                            label += '\nالقيمة الحالية (يونيو 2025): ' + new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(context.parsed.x);
                                         }
                                         return label;
                                     }
@@ -936,7 +1000,7 @@
                     // The Canvas environment injects the API key automatically when this is an empty string.
                     // If you are running this file directly from your desktop, you will need to
                     // obtain your own Gemini API key and insert it here:
-                    const apiKey = "AIzaSyClYKG-Q_omGCwT_Ug-cTU6fQeI4m8flP4"; // IMPORTANT: If running locally, replace with your actual Gemini API key, e.g., "YOUR_GEMINI_API_KEY_HERE"
+                    const apiKey = ""; // IMPORTANT: If running locally, replace with your actual Gemini API key, e.g., "YOUR_GEMINI_API_KEY_HERE"
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     
                     // If apiKey is still empty here, it means it's running locally without a manually inserted key
@@ -951,7 +1015,7 @@
                     const response = await fetch(apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
+                        body: JSON.toJSON(payload)
                     });
                     
                     console.log('Gemini API response status:', response.status); // Debugging: Log response status
@@ -990,6 +1054,8 @@
             const certificateComparisonResultDiv = document.getElementById('certificateComparisonResult');
             const comparisonLoadingSpinner = document.getElementById('comparisonLoadingSpinner');
             const calculateCertificatesButton = document.getElementById('calculateCertificates');
+            const shareButton = document.getElementById('share-btn');
+
 
             // Add null checks for these elements
             if (!certificateComparisonModal) { console.error("FATAL ERROR: Element with ID 'certificateComparisonModal' not found."); return; }
@@ -998,11 +1064,13 @@
             if (!certificateComparisonResultDiv) { console.error("FATAL ERROR: Element with ID 'certificateComparisonResultDiv' not found."); return; }
             if (!comparisonLoadingSpinner) { console.error("FATAL ERROR: Element with ID 'comparisonLoadingSpinner' not found."); return; }
             if (!calculateCertificatesButton) { console.error("FATAL ERROR: Element with ID 'calculateCertificates' not found."); return; }
+            if (!shareButton) { console.error("FATAL ERROR: Element with ID 'share-btn' not found."); return; }
 
 
             openCertificateComparisonModalButton.addEventListener('click', () => {
                 certificateComparisonModal.style.display = 'flex';
                 certificateComparisonResultDiv.innerHTML = ''; // Clear previous results
+                shareButton.classList.add('hidden'); // Hide share button when modal opens
             });
 
             closeCertificateComparisonModalButton.addEventListener('click', () => {
@@ -1042,6 +1110,8 @@
                 console.log("Calculate Certificates button clicked.");
                 certificateComparisonResultDiv.innerHTML = '';
                 comparisonLoadingSpinner.classList.remove('hidden');
+                shareButton.classList.add('hidden'); // Hide share button during calculation
+
 
                 try {
                     const initialAmountComparisonInput = document.getElementById('initialAmountComparison');
@@ -1176,12 +1246,17 @@
                     
                     // Determine the best scenario between 1 and 2 (for display purposes only)
                     let bestScenarioText = '';
+                    let bestFinalAmount = 0;
+
                     if (finalAmountScenario1Global > finalAmountScenario2Global) {
                         bestScenarioText = `السيناريو الأول (فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1})`;
+                        bestFinalAmount = finalAmountScenario1Global;
                     } else if (finalAmountScenario2Global > finalAmountScenario1Global) {
                         bestScenarioText = `السيناريو الثاني (فائدة دورية تصرف ${arabicPayoutFrequencyScenario2} مع إعادة استثمار)`;
+                        bestFinalAmount = finalAmountScenario2Global;
                     } else {
                         bestScenarioText = 'كلا السيناريوهين متساويين في العائد';
+                        bestFinalAmount = finalAmountScenario1Global;
                     }
 
                     resultHtml += `<p class="text-green-400 font-bold text-xl">أفضل سيناريو بين الشهادات: ${bestScenarioText}!</p>`;
@@ -1189,9 +1264,16 @@
                     certificateComparisonResultDiv.innerHTML = resultHtml;
                     console.log("Certificate comparison completed.");
 
+                    // Show share button and set its data attributes
+                    shareButton.classList.remove('hidden');
+                    shareButton.dataset.bestScenarioText = bestScenarioText;
+                    shareButton.dataset.finalAmount = new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(bestFinalAmount);
+
+
                 } catch (error) {
                     console.error("An error occurred during certificate comparison calculation:", error);
                     certificateComparisonResultDiv.innerHTML = `<p class="text-red-400">حدث خطأ أثناء حساب مقارنة الشهادات: ${error.message}. يرجى مراجعة المدخلات والمحاولة مرة أخرى.</p>`;
+                    shareButton.classList.add('hidden'); // Hide share button on error
                 } finally {
                     comparisonLoadingSpinner.classList.add('hidden');
                 }
@@ -1390,8 +1472,41 @@
             });
             // END: Loan Calculator Modal Logic
         };
+
+        function shareResult() {
+            const shareButton = document.getElementById('share-btn');
+            const bestScenarioText = shareButton.dataset.bestScenarioText;
+            const finalAmount = shareButton.dataset.finalAmount;
+            const infographicUrl = window.location.href.split('#')[0]; // Get current URL without hash
+
+            const shareText = `لقد قمت بتحليل عوائد الشهادات الاستثمارية! ${bestScenarioText} يحقق ${finalAmount} بعد 3 سنوات. اكتشف المزيد على: ${infographicUrl}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'تحليل عوائد الشهادات الاستثمارية',
+                    text: shareText,
+                    url: infographicUrl
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            } else {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = shareText;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+
+                const messageDiv = document.createElement('div');
+                messageDiv.textContent = 'تم نسخ الرابط والنتائج إلى الحافظة!';
+                messageDiv.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: #06D6A0; color: #073B4C; padding: 10px 20px; border-radius: 5px; z-index: 1000;';
+                document.body.appendChild(messageDiv);
+                setTimeout(() => {
+                    document.body.removeChild(messageDiv);
+                }, 3000);
+            }
+        }
     </script>
     <!-- END: JavaScript Section -->
 </body>
 </html>
- 
