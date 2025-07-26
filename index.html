@@ -354,11 +354,11 @@
                     <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح كيف تغيرت القوة الشرائية لمبلغ <span id="baseAmountDisplay2">100</span> جنيه من سنة <span id="startYearDisplay2">1900</span>، وما يعادله من مبالغ في السنوات اللاحقة لشراء نفس كمية السلع والخدمات للحفاظ على نفس القوة الشرائية.</p>
                     <div class="input-group max-w-xs mx-auto">
                         <label for="startYearInput" class="text-sm md:text-base">اختر سنة البداية:</label>
-                        <select id="startYearInput" class="w-full mb-4">
+                        <select id="startYearInput" class="w-full mb-4" aria-label="اختر سنة البداية للمقارنة">
                             <!-- Options will be dynamically populated by JavaScript -->
                         </select>
                         <label for="baseAmountInput" class="text-sm md:text-base">أدخل المبلغ الأولي (جنيه):</label>
-                        <input type="number" id="baseAmountInput" value="100" min="1" step="10">
+                        <input type="number" id="baseAmountInput" value="100" min="1" step="10" aria-label="أدخل المبلغ الأولي للجنيه المصري">
                     </div>
                     <div class="chart-container">
                         <canvas id="purchasingPowerChart"></canvas>
@@ -369,49 +369,49 @@
                     <h4 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">لحظات الانهيار التاريخية</h4>
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-icon">🏛️</div>
+                            <div class="timeline-icon" role="img" aria-label="أيقونة مبنى حكومي">🏛️</div>
                             <div class="timeline-content">
                                 <h5>1952: بداية التحول</h5>
                                 <p>بعد ثورة يوليو، بدأت الدولة تتدخل في السوق وتدعم الأسعار، مما أحدث خللاً في التوازن الاقتصادي على المدى الطويل.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-icon">🌍</div>
+                            <div class="timeline-icon" role="img" aria-label="أيقونة الكرة الأرضية">🌍</div>
                             <div class="timeline-content">
                                 <h5>السبعينات (1970s): قفزات سعرية</h5>
                                 <p>الانفتاح الاقتصادي السريع وغير المنظم أدى إلى قفزات سعرية مفاجئة وكبيرة.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-icon">📈</div>
+                            <div class="timeline-icon" role="img" aria-label="أيقونة سهم صاعد">📈</div>
                             <div class="timeline-content">
                                 <h5>التسعينات (1990s): الخصخصة</h5>
                                 <p>بدأت سياسات الخصخصة، وبدأ الجنيه يتعوّم جزئيًا (تحديد سعره حسب العرض والطلب جزئياً)، مما أثر على استقراره.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-icon">📣</div>
+                            <div class="timeline-icon" role="img" aria-label="أيقونة مكبر صوت">📣</div>
                             <div class="timeline-content">
                                 <h5>2003: إشارة التعويم</h5>
                                 <p>بدأ مصطلح "تعويم الجنيه" يظهر بقوة في النقاشات الاقتصادية، مما عكس تزايد الضغوط على العملة.</p>
                             </div>
                         </div>
                          <div class="timeline-item">
-                            <div class="timeline-icon">🏦</div>
+                            <div class="timeline-icon" role="img" aria-label="أيقونة بنك">🏦</div>
                             <div class="timeline-content">
                                 <h5>2016: التعويم الكبير</h5>
                                 <p>التعويم الرسمي الشامل للجنيه، مما أدى لقفزة ضخمة في سعر الدولار وتآكل كبير في قيمة العملة.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-icon">📉</div>
+                            <div class="timeline-icon" role="img" aria-label="أيقونة سهم هابط">📉</div>
                             <div class="timeline-content">
                                 <h5>2023: فخ الذعر</h5>
                                 <p>لما كل الناس ربطت سعر الصرف بالتضخم، وبدأ الدولار الرسمي بـ30 جنيه ويطير في السوق السوداء لـ40 و 50 و 60 جنيه… حصل هلع حقيقي! الناس، خوفاً على مدخراتها، اشترت أي حاجة تحافظ على قيمتها، ومنهم اللي اشترى دولار على 60 جنيه. وللأسف، لما تم تخفيض الجنيه في البنك وبقى على 50 جنيه، اللي اشتروا على سعر الـ60 "لبسوا في الحيطة" وخسروا جزء من فلوسهم، ومبقوش عارفين يتصرفوا ولا يبيعوا اللي اشتروه. ده بيأكد إن قرارات الذعر المالي غالباً ما تكون فخاً.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-icon">⬇️</div>
+                            <div class="timeline-icon" role="img" aria-label="أيقونة سهم لأسفل">⬇️</div>
                             <div class="timeline-content">
                                 <h5>يونيو 2025: بداية الانكماش وتأجيل الشراء</h5>
                                 <p>بعد موجات التضخم العالية، شهد شهر يونيو 2025 تضخماً شهرياً سلبياً لأول مرة منذ أكثر من عام، مما أدى إلى انخفاض أسعار بعض السلع بشكل ملحوظ. هذه الظاهرة، المعروفة بالانكماش، دفعت المستهلكين إلى تأجيل قرارات الشراء، خوفاً من استمرار تراجع الأسعار، مما قد يؤدي إلى تباطؤ اقتصادي.</p>
@@ -429,22 +429,22 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                     <div class="card text-center">
-                        <p class="text-4xl mb-3">🏃</p>
+                         <p class="text-4xl mb-3">🏃</p>
                         <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يحفز الإنفاق</h4>
                         <p class="text-gray-200 text-sm md:text-base">يشجع الناس على الشراء والاستثمار بدلاً من تخزين الأموال التي تقل قيمتها، مما يحرك عجلة الاقتصاد.</p>
                     </div>
                     <div class="card text-center">
-                        <p class="text-4xl mb-3">🤝</p>
+                         <p class="text-4xl mb-3">🤝</p>
                         <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يسهل تعديل الأجور</h4>
                         <p class="text-gray-200 text-sm md:text-base">يمنح الشركات مرونة لتعديل تكاليفها وأجورها بشكل تدريجي وسلس دون الحاجة لخفض الرواتب بشكل مباشر.</p>
                     </div>
                     <div class="card text-center">
-                        <p class="text-4xl mb-3">⛓️</p>
+                         <p class="text-4xl mb-3">⛓️</p>
                         <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يخفف عبء الديون</h4>
                         <p class="text-gray-200 text-sm md:text-base">يقلل القيمة الحقيقية للديون بمرور الوقت، مما يسهل على الأفراد والحكومات سداد قروضهم.</p>
                     </div>
                     <div class="card text-center">
-                        <p class="text-4xl mb-3">⚙️</p>
+                         <p class="text-4xl mb-3">⚙️</p>
                         <h4 class="font-bold text-lg md:text-xl mb-2 highlight-yellow">يعطي مساحة للمناورة</h4>
                         <p class="text-gray-200 text-sm md:text-base">يمنح البنك المركزي القدرة على خفض أسعار الفائدة بشكل فعال لتحفيز الاقتصاد في أوقات الركود.</p>
                     </div>
@@ -503,7 +503,7 @@
         <section class="mb-12 md:mb-16">
             <div class="card p-4 mb-8 text-center">
                 <p class="text-xl md:text-2xl font-bold highlight-yellow mb-2">معدل التضخم السنوي:</p>
-                <p id="currentInflationDate" class="text-lg md:text-xl font-bold text-gray-300 mb-2">آخر تحديث: يونيو 2025</p>
+                <p id="currentInflationDate" class="text-lg md:text-xl font-bold text-gray-300 mb-2">آخر تحديث: <span id="dynamicUpdateDate"></span></p>
                 <div class="flex items-center justify-center gap-2">
                     <span id="inflationRateDisplay" class="text-2xl md:text-4xl font-black highlight-green">14.9</span>
                     <span class="text-2xl md:text-4xl font-black highlight-green">%</span>
@@ -532,13 +532,13 @@
 
     <!-- START: Floating Buttons Container -->
     <div class="floating-buttons-container">
-        <button id="openInvestmentAdviceModal" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+        <button id="openInvestmentAdviceModal" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out" aria-label="افتح نافذة نصيحة استثمارية مخصصة">
             ✨ احصل على نصيحة استثمارية مخصصة
         </button>
-        <button id="openCertificateComparisonModal" class="bg-green-500 hover:bg-green-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+        <button id="openCertificateComparisonModal" class="bg-green-500 hover:bg-green-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out" aria-label="افتح نافذة مقارنة العوائد الاستثمارية">
             📊 قارن العوائد الاستثمارية
         </button>
-        <button id="openLoanCalculatorModal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
+        <button id="openLoanCalculatorModal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out" aria-label="افتح نافذة حاسبة القروض بضمان الشهادة">
             🏦 حاسبة القروض بضمان الشهادة
         </button>
     </div>
@@ -547,12 +547,12 @@
     <!-- START: Investment Advice Modal -->
     <div id="investmentAdviceModal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="closeModalButton">&times;</span>
+            <span class="close-button" id="closeModalButton" aria-label="إغلاق نافذة نصيحة استثمارية">&times;</span>
             <h3 class="text-2xl font-bold mb-4 highlight-yellow">نصيحة استثمارية مخصصة</h3>
             
             <div class="input-group mb-4 text-right">
                 <label for="riskTolerance" class="mb-2">تحمل المخاطر:</label>
-                <select id="riskTolerance" class="w-full">
+                <select id="riskTolerance" class="w-full" aria-label="اختر مستوى تحمل المخاطر">
                     <option value="منخفض جداً">منخفض جداً</option>
                     <option value="منخفض">منخفض</option>
                     <option value="متوسط" selected>متوسط</option>
@@ -563,7 +563,7 @@
             
             <div class="input-group mb-4 text-right">
                 <label for="investmentHorizon" class="mb-2">الأفق الاستثماري:</label>
-                <select id="investmentHorizon" class="w-full">
+                <select id="investmentHorizon" class="w-full" aria-label="اختر الأفق الاستثماري">
                     <option value="أقل من سنة">أقل من سنة</option>
                     <option value="1-3 سنوات">1-3 سنوات</option>
                     <option value="3-5 سنوات" selected>3-5 سنوات</option>
@@ -571,14 +571,14 @@
                 </select>
             </div>
 
-            <button id="getAdviceButton" class="modal-button">
+            <button id="getAdviceButton" class="modal-button" aria-label="احصل على النصيحة الاستثمارية">
                 احصل على النصيحة ✨
             </button>
 
             <div id="adviceResult" class="mt-6 text-right text-gray-200 text-base">
                 <!-- LLM advice will be displayed here -->
             </div>
-            <div id="loadingSpinner" class="loading-spinner hidden"></div>
+            <div id="loadingSpinner" class="loading-spinner hidden" role="status" aria-label="جاري تحميل النصيحة"></div>
         </div>
     </div>
     <!-- END: Investment Advice Modal -->
@@ -586,7 +586,7 @@
     <!-- START: Certificate Comparison Modal -->
     <div id="certificateComparisonModal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="closeCertificateComparisonModalButton">&times;</span>
+            <span class="close-button" id="closeCertificateComparisonModalButton" aria-label="إغلاق نافذة مقارنة الشهادات">&times;</span>
             <h3 class="text-2xl font-bold mb-4 highlight-yellow">📊 مقارنة عوائد الشهادات (3 سنوات)</h3>
             
             <p class="text-gray-300 text-sm mb-4">قارن بين سيناريوهين للشهادات الاستثمارية على مدار 3 سنوات.</p>
@@ -594,26 +594,26 @@
             <div id="certificateComparisonSection">
                 <div class="input-group mb-4 text-right">
                     <label for="initialAmountComparison" class="mb-2">المبلغ الأولي (جنيه):</label>
-                    <input type="number" id="initialAmountComparison" value="100000" min="100" step="1000">
+                    <input type="number" id="initialAmountComparison" value="100000" min="100" step="1000" aria-label="أدخل المبلغ الأولي لمقارنة الشهادات">
                 </div>
 
                 <h4 class="text-xl font-bold mb-3 highlight-green text-right">السيناريو الأول: فائدة سنوية مباشرة (تصرف آخر السنة)</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="input-group mb-2 text-right">
                         <label for="annualDirectRateYear1" class="mb-1">السنة الأولى (%):</label>
-                        <input type="number" id="annualDirectRateYear1" value="27" min="0" step="0.1">
+                        <input type="number" id="annualDirectRateYear1" value="27" min="0" step="0.1" aria-label="أدخل نسبة الفائدة السنوية المباشرة للسنة الأولى">
                     </div>
                     <div class="input-group mb-2 text-right">
                         <label for="annualDirectRateYear2" class="mb-1">السنة الثانية (%):</label>
-                        <input type="number" id="annualDirectRateYear2" value="24" min="0" step="0.1">
+                        <input type="number" id="annualDirectRateYear2" value="24" min="0" step="0.1" aria-label="أدخل نسبة الفائدة السنوية المباشرة للسنة الثانية">
                     </div>
                     <div class="input-group mb-4 text-right">
                         <label for="annualDirectRateYear3" class="mb-1">السنة الثالثة (%):</label>
-                        <input type="number" id="annualDirectRateYear3" value="22" min="0" step="0.1">
+                        <input type="number" id="annualDirectRateYear3" value="22" min="0" step="0.1" aria-label="أدخل نسبة الفائدة السنوية المباشرة للسنة الثالثة">
                     </div>
                     <div class="input-group mb-4 text-right">
                         <label for="payoutFrequencyScenario1" class="mb-2">وتيرة صرف الفائدة (السيناريو الأول):</label>
-                        <select id="payoutFrequencyScenario1" class="w-full">
+                        <select id="payoutFrequencyScenario1" class="w-full" aria-label="اختر وتيرة صرف الفائدة للسيناريو الأول">
                             <option value="annually">سنوي</option>
                             <option value="semiannually">نصف سنوي</option>
                             <option value="quarterly">ربع سنوي</option>
@@ -626,19 +626,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="input-group mb-2 text-right">
                         <label for="periodicRateYear1" class="mb-1">السنة الأولى (%):</label>
-                        <input type="number" id="periodicRateYear1" value="24" min="0" step="0.1">
+                        <input type="number" id="periodicRateYear1" value="24" min="0" step="0.1" aria-label="أدخل نسبة الفائدة الدورية للسنة الأولى">
                     </div>
                     <div class="input-group mb-2 text-right">
                         <label for="periodicRateYear2" class="mb-1">السنة الثانية (%):</label>
-                        <input type="number" id="periodicRate2" value="20" min="0" step="0.1">
+                        <input type="number" id="periodicRate2" value="20" min="0" step="0.1" aria-label="أدخل نسبة الفائدة الدورية للسنة الثانية">
                     </div>
                     <div class="input-group mb-4 text-right">
                         <label for="periodicRateYear3" class="mb-1">السنة الثالثة (%):</label>
-                        <input type="number" id="periodicRateYear3" value="18" min="0" step="0.1">
+                        <input type="number" id="periodicRateYear3" value="18" min="0" step="0.1" aria-label="أدخل نسبة الفائدة الدورية للسنة الثالثة">
                     </div>
                     <div class="input-group mb-4 text-right">
                         <label for="payoutFrequency" class="mb-2">وتيرة صرف الفائدة الدورية (السيناريو الثاني):</label>
-                        <select id="payoutFrequency" class="w-full">
+                        <select id="payoutFrequency" class="w-full" aria-label="اختر وتيرة صرف الفائدة الدورية للسيناريو الثاني">
                             <option value="monthly">شهري</option>
                             <option value="quarterly">ربع سنوي</option>
                             <option value="semiannually">نصف سنوي</option>
@@ -647,22 +647,22 @@
                     </div>
                     <div class="input-group mb-4 text-right">
                         <label for="dailyReinvestmentRate" class="mb-1">فائدة إعادة الاستثمار اليومية (%):</label>
-                        <input type="number" id="dailyReinvestmentRate" value="10" min="0" step="0.1">
+                        <input type="number" id="dailyReinvestmentRate" value="10" min="0" step="0.1" aria-label="أدخل نسبة فائدة إعادة الاستثمار اليومية">
                     </div>
                 </div>
 
-                <button id="calculateCertificates" class="modal-button">
+                <button id="calculateCertificates" class="modal-button" aria-label="احسب عوائد الشهادات">
                     احسب عوائد الشهادات ✨
                 </button>
 
                 <div id="certificateComparisonResult" class="mt-6 text-right text-gray-200 text-base">
                     <!-- Certificate comparison results will be displayed here -->
                 </div>
-                <button onclick="shareResult()" id="share-btn" class="modal-button hidden mt-4">
+                <button onclick="shareResult()" id="share-btn" class="modal-button hidden mt-4" aria-label="شارك النتائج مع الآخرين">
                     &#x21E7; شارك وانصح غيرك!
                 </button>
             </div>
-            <div id="comparisonLoadingSpinner" class="loading-spinner hidden"></div>
+            <div id="comparisonLoadingSpinner" class="loading-spinner hidden" role="status" aria-label="جاري حساب مقارنة الشهادات"></div>
         </div>
     </div>
     <!-- END: Certificate Comparison Modal -->
@@ -670,18 +670,18 @@
     <!-- START: Loan Calculator Modal -->
     <div id="loanCalculatorModal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="closeLoanCalculatorModalButton">&times;</span>
+            <span class="close-button" id="closeLoanCalculatorModalButton" aria-label="إغلاق نافذة حاسبة القروض">&times;</span>
             <h3 class="text-2xl font-bold mb-4 highlight-yellow">  حاسبة القروض بضمان الشهادة</h3>
             <p class="text-gray-300 text-sm mb-4">احسب وضع القرض بضمان شهادتك. (تأكد من حساب عوائد الشهادات أولاً)</p>
             
             <div id="loanScenarioSection">
                 <div class="input-group mb-4 text-right">
                     <label for="initialAmountLoan" class="mb-2">المبلغ الأولي للشهادة (جنيه):</label>
-                    <input type="number" id="initialAmountLoan" value="100000" min="100" step="1000">
+                    <input type="number" id="initialAmountLoan" value="100000" min="100" step="1000" aria-label="أدخل المبلغ الأولي للشهادة لغرض القرض">
                 </div>
                 <div class="input-group mb-4 text-right">
                     <label for="loanCertType" class="mb-2">نوع الشهادة للقرض:</label>
-                    <select id="loanCertType" class="w-full">
+                    <select id="loanCertType" class="w-full" aria-label="اختر نوع الشهادة للقرض">
                         <option value="scenario1">السيناريو الأول (فائدة سنوية مباشرة)</option>
                         <option value="scenario2">السيناريو الثاني (فائدة دورية مع إعادة استثمار)</option>
                     </select>
@@ -690,15 +690,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="input-group mb-2 text-right">
                         <label for="loanAnnualRate" class="mb-1">فائدة القرض السنوية (%):</label>
-                        <input type="number" id="loanAnnualRate" value="20" min="0" step="0.1">
+                        <input type="number" id="loanAnnualRate" value="20" min="0" step="0.1" aria-label="أدخل نسبة فائدة القرض السنوية">
                     </div>
                     <div class="input-group mb-4 text-right">
                         <label for="loanDailyReinvestmentRate" class="mb-1">فائدة إعادة الاستثمار اليومية (%):</label>
-                        <input type="number" id="loanDailyReinvestmentRate" value="10" min="0" step="0.1">
+                        <input type="number" id="loanDailyReinvestmentRate" value="10" min="0" step="0.1" aria-label="أدخل نسبة فائدة إعادة الاستثمار اليومية للقرض">
                     </div>
                 </div>
 
-                <button id="calculateLoanScenarioButton" class="modal-button">
+                <button id="calculateLoanScenarioButton" class="modal-button" aria-label="احسب وضع القرض">
                     احسب وضع القرض 🏦
                 </button>
 
@@ -706,7 +706,7 @@
                     <!-- Loan scenario results and advice will be displayed here -->
                 </div>
             </div>
-            <div id="loanCalculatorLoadingSpinner" class="loading-spinner hidden"></div>
+            <div id="loanCalculatorLoadingSpinner" class="loading-spinner hidden" role="status" aria-label="جاري حساب وضع القرض"></div>
         </div>
     </div>
     <!-- END: Loan Calculator Modal -->
@@ -770,7 +770,7 @@
                         '2020': 27000,
                         'يونيو 2025': 40000
                     });
-                }, 1000); // Simulate network delay
+                }, 500); // Reduced simulated network delay
             });
         }
 
@@ -785,7 +785,7 @@
                         originalCashValue: 3000,
                         originalGoldValue: 1727290
                     });
-                }, 1500); // Simulate network delay
+                }, 750); // Reduced simulated network delay
             });
         }
 
@@ -850,7 +850,7 @@
                 color: white;
             `;
             loadingOverlay.innerHTML = `
-                <div class="loading-spinner"></div>
+                <div class="loading-spinner" role="status" aria-label="جاري تحميل البيانات الأساسية"></div>
                 <p class="mt-4 text-xl">جاري تحميل البيانات...</p>
             `;
             document.body.appendChild(loadingOverlay);
@@ -867,10 +867,12 @@
                 allYears = Object.keys(fetchedInflationFactors); // Update allYears after fetching
                 fetchedInvestmentData = await fetchInvestmentData();
 
-                // Update current inflation date display
-                const currentInflationDateElement = document.getElementById('currentInflationDate');
-                if (currentInflationDateElement) {
-                    currentInflationDateElement.innerHTML = `آخر تحديث: يونيو 2025`;
+                // Update current inflation date display dynamically
+                const dynamicUpdateDateElement = document.getElementById('dynamicUpdateDate');
+                if (dynamicUpdateDateElement) {
+                    const currentDate = new Date();
+                    const options = { month: 'long', year: 'numeric' };
+                    dynamicUpdateDateElement.textContent = currentDate.toLocaleDateString('ar-EG', options);
                 }
 
                 // Populate startYearInput dropdown
