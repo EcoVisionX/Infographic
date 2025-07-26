@@ -322,9 +322,10 @@
 
         <!-- START: Header Section -->
         <header class="text-center mb-8 md:mb-12">
-            <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸 الجنيه المصري: رحلة قرن</h1>
+            <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸 االجنيه المصري: رحلة قرن</h1>
+            <!-- Removed: <h2 class="text-xl md:text-4xl font-bold">آخر تحديث للتضخم في مصر من 2016 - 2024</h2> -->
             <h2 class="text-xl md:text-4xl font-bold"></h2>
-            <p class="text-base md:text-xl mt-4 max-w-3xl mx-auto text-gray-300">"الجنيه مش دايم… التضخم هو اللي دايم!" هل تساءلت يوماً عن قيمة "جنيه" زمان؟ في هذا الإنفوجرافيك، نكشف رحلة الجنيه المصري وتأثير التضخم عليه، وكيف تحمي مدخراتك من الضياع</p>
+            <p class="text-base md:text-xl mt-4 max-w-3xl mx-auto text-gray-300">"الجنيه مش دايم… التضخم هو اللي دايم!" هل تساءلت يوماً عن قيمة "جنيه" زمان؟ في هذا الإنفوجرافيك، نكشف رحلة الجنيه المصري وتأثير التضخم عليه، وكيف تحمي مدخراتك من الضياع!</p>
         </header>
         <!-- END: Header Section -->
 
@@ -349,10 +350,14 @@
                 </div>
 
                 <div class="card mb-8 md:mb-12">
-                    <h4 class="text-xl md:text-2xl font-bold mb-3 text-center">القوة الشرائية لمبلغ <span id="baseAmountDisplay">100</span> جنيه من عام 1900 عبر الزمن</h4>
-                    <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح كيف تآكلت القوة الشرائية لمبلغ <span id="baseAmountDisplay2">100</span> جنيه من عام 1900، وما يعادله من مبالغ في السنوات اللاحقة لشراء نفس كمية السلع والخدمات للحفاظ على نفس القوة الشرائية.</p>
+                    <h4 class="text-xl md:text-2xl font-bold mb-3 text-center">القوة الشرائية لمبلغ <span id="baseAmountDisplay">100</span> جنيه من سنة <span id="startYearDisplay">1900</span> عبر الزمن</h4>
+                    <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح كيف تغيرت القوة الشرائية لمبلغ <span id="baseAmountDisplay2">100</span> جنيه من سنة <span id="startYearDisplay2">1900</span>، وما يعادله من مبالغ في السنوات اللاحقة لشراء نفس كمية السلع والخدمات للحفاظ على نفس القوة الشرائية.</p>
                     <div class="input-group max-w-xs mx-auto">
-                        <label for="baseAmountInput" class="text-sm md:text-base">أدخل مبلغ عام 1900 للمقارنة (جنيه):</label>
+                        <label for="startYearInput" class="text-sm md:text-base">اختر سنة البداية:</label>
+                        <select id="startYearInput" class="w-full mb-4">
+                            <!-- Options will be dynamically populated by JavaScript -->
+                        </select>
+                        <label for="baseAmountInput" class="text-sm md:text-base">أدخل المبلغ الأولي (جنيه):</label>
                         <input type="number" id="baseAmountInput" value="100" min="1" step="10">
                     </div>
                     <div class="chart-container">
@@ -454,7 +459,7 @@
 
                 <div class="card mb-8 md:mb-12">
                     <h4 class="text-xl md:text-2xl font-bold mb-3 text-center">مقارنة صادمة: 10,000 جنيه من عام 2000</h4>
-                     <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح الفرق الهائل بين الاحتفاظ بمبلغ 10,000 جنيه "تحت البلاطة" واستثماره في الذهب منذ عام 2000 وحتى اليوم (يونيو 2025). لاحظ أن نفس المبلغ لو استثمر في الذهب لكانت قيمته اليوم حوالي **1.7 مليون جنيه**!</p>
+                     <p class="text-center text-gray-300 text-sm md:text-base mb-4">هذا الرسم يوضح الفرق الهائل بين الاحتفاظ بمبلغ 10,000 جنيه "تحت البلاطة" واستثماره في الذهب منذ عام 2000 وحتى اليوم (يونيو 2025). لاحظ أن القيمة النقدية للمبلغ تعكس قوته الشرائية المتآكلة بناءً على بيانات التضخم، بينما لو استثمر في الذهب لكانت قيمته اليوم حوالي **1.7 مليون جنيه**!</p>
                     <div class="chart-container">
                         <canvas id="investmentChart"></canvas>
                     </div>
@@ -748,38 +753,65 @@
         let finalAmountScenario1Global = 0;
         let finalAmountScenario2Global = 0;
 
-
         // Data for "100 EGP from past = X EGP today"
         // This data now represents: "Nominal EGP needed in that year to buy what 100 EGP bought in 1900"
         // The first value (100) is the baseline for 1900.
-        const initialPurchasingPowerData = {
-            labels: ['1900', '1952', '2000', '2016', '2020', 'يونيو 2025'].map(wrapLabel), /* Added 2000 and 2020 */
-            originalData: [100, 400, 12000, 15625, 27000, 40000], /* Updated data points */
-            datasets: [{
-                label: 'المبلغ المطلوب (بالجنيه)',
-                data: [],
-                borderColor: '#FFD166',
-                backgroundColor: 'rgba(255, 209, 102, 0.2)',
-                fill: true,
-                tension: 0.1
-            }]
+        const inflationFactorsFrom1900 = {
+            '1900': 100,
+            '1952': 400,
+            '2000': 12000,
+            '2016': 15625,
+            '2020': 27000,
+            'يونيو 2025': 40000
         };
 
+        const allYears = Object.keys(inflationFactorsFrom1900);
+
         // Function to update the purchasing power chart based on user input
-        const updatePurchasingPowerChart = (baseAmount) => {
-            const scaledData = initialPurchasingPowerData.originalData.map(value => (value / 100) * baseAmount);
+        const updatePurchasingPowerChart = (baseAmount, startYear) => {
+            const startYearFactor = inflationFactorsFrom1900[startYear];
+            if (!startYearFactor) {
+                console.error("Invalid start year selected:", startYear);
+                return;
+            }
+
+            const chartLabels = allYears.filter(year => {
+                // Include all years from startYear onwards, and always include "يونيو 2025"
+                const yearNum = parseInt(year);
+                const startYearNum = parseInt(startYear);
+                return yearNum >= startYearNum || year === 'يونيو 2025';
+            }).sort((a, b) => {
+                // Custom sort to handle "يونيو 2025" at the end
+                if (a === 'يونيو 2025') return 1;
+                if (b === 'يونيو 2025') return -1;
+                return parseInt(a) - parseInt(b);
+            });
+
+            const scaledData = chartLabels.map(year => {
+                const currentYearFactor = inflationFactorsFrom1900[year];
+                const relativeFactor = currentYearFactor / startYearFactor;
+                return baseAmount * relativeFactor;
+            });
+
+            purchasingPowerChartInstance.data.labels = chartLabels.map(wrapLabel);
             purchasingPowerChartInstance.data.datasets[0].data = scaledData;
             purchasingPowerChartInstance.update();
+
             document.getElementById('baseAmountDisplay').textContent = new Intl.NumberFormat('ar-EG').format(baseAmount);
             document.getElementById('baseAmountDisplay2').textContent = new Intl.NumberFormat('ar-EG').format(baseAmount);
+            document.getElementById('startYearDisplay').textContent = startYear;
+            document.getElementById('startYearDisplay2').textContent = startYear;
         };
 
         // Data for "Shocking Comparison" - fixed values for 10,000 EGP in 2000
         const initialInvestmentData = {
             labels: ['ادخار نقدي "تحت البلاطة"', 'استثمار في الذهب'].map(wrapLabel),
             // For 10,000 EGP in 2000:
-            // Cash value today (if 10,000 EGP cash in 2000 is 500 EGP today, then 10,000 EGP cash is 500 EGP today)
-            originalCashValue: 500, 
+            // Calculate cash value today based on inflationFactorsFrom1900
+            // 10,000 EGP in 2000, what is its purchasing power worth in 2025 EGP?
+            // Inflation factor from 2000 to 2025 is (40000 / 12000) = 3.3333...
+            // So, 10,000 EGP from 2000 is worth 10000 / 3.3333... = 3000 EGP in 2025 purchasing power.
+            originalCashValue: (10000 / (inflationFactorsFrom1900['يونيو 2025'] / inflationFactorsFrom1900['2000'])), 
             // Gold value today (10,000 EGP in 2000 = ~363.64 grams. 363.64 * 4750 EGP/gram = ~1,727,290 EGP)
             originalGoldValue: 1727290, 
             datasets: [{
@@ -800,16 +832,32 @@
                 currentInflationDateElement.innerHTML = `آخر تحديث: يونيو 2025`;
             }
 
+            // Populate startYearInput dropdown
+            const startYearInputSelect = document.getElementById('startYearInput');
+            // Clear existing options to prevent duplicates
+            startYearInputSelect.innerHTML = ''; 
+            allYears.forEach(year => {
+                if (year !== 'يونيو 2025') { // Do not allow "يونيو 2025" as a start year
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    startYearInputSelect.appendChild(option);
+                }
+            });
+            // Set default selected year if needed, or ensure the first option is selected
+            startYearInputSelect.value = '1900'; // Default to 1900
+
+
             // Initialize Purchasing Power Chart
             const ctxPurchasingPower = document.getElementById('purchasingPowerChart').getContext('2d');
             if (ctxPurchasingPower) {
                 purchasingPowerChartInstance = new Chart(ctxPurchasingPower, {
                     type: 'line',
                     data: {
-                        labels: initialPurchasingPowerData.labels,
+                        labels: [], // Will be populated dynamically
                         datasets: [{
                             label: 'المبلغ المطلوب (بالجنيه)', /* Updated label */
-                            data: initialPurchasingPowerData.originalData, // Initialize with data directly
+                            data: [], // Will be populated dynamically
                             borderColor: '#FFD166',
                             backgroundColor: 'rgba(255, 209, 102, 0.2)',
                             fill: true,
@@ -824,7 +872,7 @@
                                 beginAtZero: true,
                                 title: {
                                     display: true,
-                                    text: 'المبلغ المطلوب بالجنيه', /* Updated label */
+                                    text: 'القيمة بالجنيه', /* Updated label */
                                     color: '#FFFFFF'
                                 },
                                 ticks: { color: '#FFFFFF' }
@@ -906,7 +954,7 @@
                                         // Custom label for "ادخار نقدي 'تحت البلاطة'"
                                         if (context.dataIndex === 0) { 
                                             label = 'القيمة الأصلية في 2000: 10,000 جنيه';
-                                            label += '\nالقيمة الحالية (يونيو 2025): ' + new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(context.parsed.x);
+                                            label += '\nالقوة الشرائية المتبقية في يونيو 2025: ' + new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(context.parsed.x);
                                         } else { // For "استثمار في الذهب"
                                             label = 'القيمة الأصلية في 2000: 10,000 جنيه';
                                             label += '\nالقيمة الحالية (يونيو 2025): ' + new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(context.parsed.x);
@@ -926,20 +974,35 @@
             const baseAmountInput = document.getElementById('baseAmountInput');
             
             // Add null checks for these elements as well, as they are accessed on load
-            if (!baseAmountInput) { console.error("FATAL ERROR: Element with ID 'baseAmountInput' not found. Cannot initialize main charts."); return; }
+            if (!baseAmountInput || !startYearInputSelect) { 
+                console.error("FATAL ERROR: Required input elements not found. Cannot initialize main charts."); 
+                return; 
+            }
 
-
-            updatePurchasingPowerChart(parseFloat(baseAmountInput.value));
+            // Initial update with default values
+            updatePurchasingPowerChart(parseFloat(baseAmountInput.value), startYearInputSelect.value);
 
             // Event listeners for input fields
             baseAmountInput.addEventListener('input', (e) => {
                 const newAmount = parseFloat(e.target.value);
+                const selectedYear = startYearInputSelect.value;
                 if (!isNaN(newAmount) && newAmount > 0) {
-                    updatePurchasingPowerChart(newAmount);
+                    updatePurchasingPowerChart(newAmount, selectedYear);
                 } else {
-                    updatePurchasingPowerChart(0);
+                    updatePurchasingPowerChart(0, selectedYear);
                 }
             });
+
+            startYearInputSelect.addEventListener('change', (e) => {
+                const newYear = e.target.value;
+                const currentAmount = parseFloat(baseAmountInput.value);
+                if (!isNaN(currentAmount) && currentAmount > 0) {
+                    updatePurchasingPowerChart(currentAmount, newYear);
+                } else {
+                    updatePurchasingPowerChart(0, newYear);
+                }
+            });
+
 
             // START: Gemini API Integration Logic for Investment Advice Modal
             const investmentAdviceModal = document.getElementById('investmentAdviceModal');
@@ -1015,7 +1078,7 @@
                     const response = await fetch(apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.toJSON(payload)
+                        body: JSON.stringify(payload)
                     });
                     
                     console.log('Gemini API response status:', response.status); // Debugging: Log response status
@@ -1131,8 +1194,8 @@
                     if (!periodicRateYear1Input) { throw new Error("Element with ID 'periodicRateYear1' not found."); }
                     const periodicRateYear2Input = document.getElementById('periodicRate2'); // Correct ID here
                     if (!periodicRateYear2Input) { throw new Error("Element with ID 'periodicRate2' not found."); } // Correct variable name in check
-                    const periodicRateYear3Input = document.getElementById('periodicRateYear3'); // Correct ID here
-                    if (!periodicRateYear3Input) { throw new Error("Element with ID 'periodicRateYear3' not found."); } // Correct variable name in check
+                    const periodicRateYear3Input = document.getElementById('periodicRate3'); // Correct ID here
+                    if (!periodicRateYear3Input) { throw new Error("Element with ID 'periodicRate3' not found."); } // Correct variable name in check
                     
                     const payoutFrequencySelect = document.getElementById('payoutFrequency');
                     if (!payoutFrequencySelect) { throw new Error("Element with ID 'payoutFrequency' not found."); }
