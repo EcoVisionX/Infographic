@@ -322,7 +322,7 @@
 
         <!-- START: Header Section -->
         <header class="text-center mb-8 md:mb-12">
-            <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸  االجنيه المصري: رحلة قرن</h1>
+            <h1 class="text-3xl md:text-6xl font-black highlight-yellow mb-2">💸 االجنيه المصري: رحلة قرن</h1>
             <!-- Removed: <h2 class="text-xl md:text-4xl font-bold">آخر تحديث للتضخم في مصر من 2016 - 2024</h2> -->
             <h2 class="text-xl md:text-4xl font-bold"></h2>
             <p class="text-base md:text-xl mt-4 max-w-3xl mx-auto text-gray-300">"الجنيه مش دايم… التضخم هو اللي دايم!" هل تساءلت يوماً عن قيمة "جنيه" زمان؟ في هذا الإنفوجرافيك، نكشف رحلة الجنيه المصري وتأثير التضخم عليه، وكيف تحمي مدخراتك من الضياع!</p>
@@ -491,7 +491,8 @@
                 <!-- START: Summary Section -->
                 <div class="card mt-8 mb-8 md:mb-12 text-center">
                     <h4 class="text-xl md:text-2xl font-bold highlight-yellow mb-3">الخلاصة: الوعي المالي هو درعك الأقوى!</h4>
-                    <p class="max-w-3xl mx-auto text-gray-300 text-sm md:text-base">الجنيه المصري مر برحلة مؤلمة. من تعلم من التاريخ، عرف أن القيمة ليست في عدد الجنيهات، بل في قوتها الشرائية. فهمك للتضخم هو درعك لتحافظ على تعبك وشغلك. تذكر دائماً: "إزاي تخلي فلوسك تشتغل ليك، مش عليك.… فإذا بقيت نائمة في حساب بعائد 10% بينما التضخم 30%، فأنت تخسر 20% كل سنة وانت مش حاسس 
+                    <p class="max-w-3xl mx-auto text-gray-300 text-sm md:text-base">الجنيه المصري مر برحلة مؤلمة. من تعلم من التاريخ، عرف أن القيمة ليست في عدد الجنيهات، بل في قوتها الشرائية. فهمك للتضخم هو درعك لتحافظ على تعبك وشغلك. تذكر دائماً: "فلوسك يجب أن تعمل أكثر منك… فإذا بقيت نائمة في حساب بعائد 10% بينما التضخم 30%، فأنت تخسر 20% كل سنة دون أن تدرك ذلك!"</p>
+                </div>
                 <!-- END: Summary Section -->
                 
             </section>
@@ -532,7 +533,7 @@
     <!-- START: Floating Buttons Container -->
     <div class="floating-buttons-container">
         <button id="openInvestmentAdviceModal" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
-            ✨ احصل على نصيحة استثمارية 
+            ✨ احصل على نصيحة استثمارية مخصصة
         </button>
         <button id="openCertificateComparisonModal" class="bg-green-500 hover:bg-green-600 text-blue-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out">
             📊 قارن العوائد الاستثمارية
@@ -547,7 +548,7 @@
     <div id="investmentAdviceModal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="closeModalButton">&times;</span>
-            <h3 class="text-2xl font-bold mb-4 highlight-yellow">نصيحة استثمارية </h3>
+            <h3 class="text-2xl font-bold mb-4 highlight-yellow">نصيحة استثمارية مخصصة</h3>
             
             <div class="input-group mb-4 text-right">
                 <label for="riskTolerance" class="mb-2">تحمل المخاطر:</label>
@@ -752,25 +753,48 @@
         let finalAmountScenario1Global = 0;
         let finalAmountScenario2Global = 0;
 
-        // Data for "100 EGP from past = X EGP today"
-        // This data now represents: "Nominal EGP needed in that year to buy what 100 EGP bought in 1900"
-        // The first value (100) is the baseline for 1900.
-        const inflationFactorsFrom1900 = {
-            '1900': 100,
-            '1952': 400,
-            '2000': 12000,
-            '2016': 15625,
-            '2020': 27000,
-            'يونيو 2025': 40000
-        };
+        // Global variables to store fetched data
+        let fetchedInflationFactors = {};
+        let allYears = [];
+        let fetchedInvestmentData = {};
 
-        const allYears = Object.keys(inflationFactorsFrom1900);
+        // Simulated API call for inflation data
+        async function fetchInflationData() {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve({
+                        '1900': 100,
+                        '1952': 400,
+                        '2000': 12000,
+                        '2016': 15625,
+                        '2020': 27000,
+                        'يونيو 2025': 40000
+                    });
+                }, 1000); // Simulate network delay
+            });
+        }
+
+        // Simulated API call for investment comparison data
+        async function fetchInvestmentData() {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    // These values are based on the infographic's narrative for 10,000 EGP in 2000
+                    // 10,000 EGP in 2000 is worth 3000 EGP in 2025 purchasing power (based on 40000/12000 factor)
+                    // 10,000 EGP in 2000 invested in gold is ~1,727,290 EGP today
+                    resolve({
+                        originalCashValue: 3000,
+                        originalGoldValue: 1727290
+                    });
+                }, 1500); // Simulate network delay
+            });
+        }
+
 
         // Function to update the purchasing power chart based on user input
         const updatePurchasingPowerChart = (baseAmount, startYear) => {
-            const startYearFactor = inflationFactorsFrom1900[startYear];
+            const startYearFactor = fetchedInflationFactors[startYear];
             if (!startYearFactor) {
-                console.error("Invalid start year selected:", startYear);
+                console.error("Invalid start year selected or data not loaded:", startYear);
                 return;
             }
 
@@ -787,7 +811,7 @@
             });
 
             const scaledData = chartLabels.map(year => {
-                const currentYearFactor = inflationFactorsFrom1900[year];
+                const currentYearFactor = fetchedInflationFactors[year];
                 const relativeFactor = currentYearFactor / startYearFactor;
                 return baseAmount * relativeFactor;
             });
@@ -802,138 +826,157 @@
             document.getElementById('startYearDisplay2').textContent = startYear;
         };
 
-        // Data for "Shocking Comparison" - fixed values for 10,000 EGP in 2000
-        const initialInvestmentData = {
-            labels: ['تحويشة "تحت البلاطة"', 'استثمار في الذهب'].map(wrapLabel),
-            // For 10,000 EGP in 2000:
-            // Calculate cash value today based on inflationFactorsFrom1900
-            // 10,000 EGP in 2000, what is its purchasing power worth in 2025 EGP?
-            // Inflation factor from 2000 to 2025 is (40000 / 12000) = 3.3333...
-            // So, 10,000 EGP from 2000 is worth 10000 / 3.3333... = 3000 EGP in 2025 purchasing power.
-            originalCashValue: (10000 / (inflationFactorsFrom1900['يونيو 2025'] / inflationFactorsFrom1900['2000'])), 
-            // Gold value today (10,000 EGP in 2000 = ~363.64 grams. 363.64 * 4750 EGP/gram = ~1,727,290 EGP)
-            originalGoldValue: 1727290, 
-            datasets: [{
-                label: 'القيمة النهائية في 2025 (بالجنيه)',
-                data: [],
-                backgroundColor: ['#FF6B6B', '#06D6A0'],
-                borderColor: ['#FF6B6B', '#06D6A0'],
-                borderWidth: 1
-            }]
-        };
-
         // Initialize charts and set up event listeners when the window loads
-        window.onload = function() {
-            // Update current inflation date display
-            const currentInflationDateElement = document.getElementById('currentInflationDate');
-            if (currentInflationDateElement) {
-                // The user explicitly requested "آخر تحديث: يونيو 2025" and 14.9%
-                currentInflationDateElement.innerHTML = `آخر تحديث: يونيو 2025`;
-            }
+        window.onload = async function() {
+            // Show a main loading spinner overlay
+            const mainContent = document.querySelector('main');
+            const header = document.querySelector('header');
+            const footer = document.querySelector('footer');
+            const floatingButtons = document.querySelector('.floating-buttons-container');
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'mainLoadingOverlay';
+            loadingOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(7, 59, 76, 0.9); /* Dark blue with transparency */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                flex-direction: column;
+                color: white;
+            `;
+            loadingOverlay.innerHTML = `
+                <div class="loading-spinner"></div>
+                <p class="mt-4 text-xl">جاري تحميل البيانات...</p>
+            `;
+            document.body.appendChild(loadingOverlay);
 
-            // Populate startYearInput dropdown
-            const startYearInputSelect = document.getElementById('startYearInput');
-            // Clear existing options to prevent duplicates
-            startYearInputSelect.innerHTML = ''; 
-            allYears.forEach(year => {
-                if (year !== 'يونيو 2025') { // Do not allow "يونيو 2025" as a start year
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    startYearInputSelect.appendChild(option);
+            // Hide main content initially
+            if (mainContent) mainContent.style.display = 'none';
+            if (header) header.style.display = 'none';
+            if (footer) footer.style.display = 'none';
+            if (floatingButtons) floatingButtons.style.display = 'none';
+
+            try {
+                // Fetch data
+                fetchedInflationFactors = await fetchInflationData();
+                allYears = Object.keys(fetchedInflationFactors); // Update allYears after fetching
+                fetchedInvestmentData = await fetchInvestmentData();
+
+                // Update current inflation date display
+                const currentInflationDateElement = document.getElementById('currentInflationDate');
+                if (currentInflationDateElement) {
+                    currentInflationDateElement.innerHTML = `آخر تحديث: يونيو 2025`;
                 }
-            });
-            // Set default selected year if needed, or ensure the first option is selected
-            startYearInputSelect.value = '1900'; // Default to 1900
+
+                // Populate startYearInput dropdown
+                const startYearInputSelect = document.getElementById('startYearInput');
+                // Clear existing options to prevent duplicates
+                startYearInputSelect.innerHTML = ''; 
+                allYears.forEach(year => {
+                    if (year !== 'يونيو 2025') { // Do not allow "يونيو 2025" as a start year
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        startYearInputSelect.appendChild(option);
+                    }
+                });
+                // Set default selected year if needed, or ensure the first option is selected
+                startYearInputSelect.value = '1900'; // Default to 1900
 
 
-            // Initialize Purchasing Power Chart
-            const ctxPurchasingPower = document.getElementById('purchasingPowerChart').getContext('2d');
-            if (ctxPurchasingPower) {
-                purchasingPowerChartInstance = new Chart(ctxPurchasingPower, {
-                    type: 'line',
-                    data: {
-                        labels: [], // Will be populated dynamically
-                        datasets: [{
-                            label: 'المبلغ المطلوب (بالجنيه)', /* Updated label */
-                            data: [], // Will be populated dynamically
-                            borderColor: '#FFD166',
-                            backgroundColor: 'rgba(255, 209, 102, 0.2)',
-                            fill: true,
-                            tension: 0.1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'القيمة بالجنيه', /* Updated label */
-                                    color: '#FFFFFF'
-                                },
-                                ticks: { color: '#FFFFFF' }
-                            },
-                            x: {
-                                ticks: { color: '#FFFFFF' }
-                            }
+                // Initialize Purchasing Power Chart
+                const ctxPurchasingPower = document.getElementById('purchasingPowerChart').getContext('2d');
+                if (ctxPurchasingPower) {
+                    purchasingPowerChartInstance = new Chart(ctxPurchasingPower, {
+                        type: 'line',
+                        data: {
+                            labels: [], // Will be populated dynamically
+                            datasets: [{
+                                label: 'المبلغ المطلوب (بالجنيه)', /* Updated label */
+                                data: [], // Will be populated dynamically
+                                borderColor: '#FFD166',
+                                backgroundColor: 'rgba(255, 209, 102, 0.2)',
+                                fill: true,
+                                tension: 0.1
+                            }]
                         },
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    color: '#FFFFFF'
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'القيمة بالجنيه', /* Updated label */
+                                        color: '#FFFFFF'
+                                    },
+                                    ticks: { color: '#FFFFFF' }
+                                },
+                                x: {
+                                    ticks: { color: '#FFFFFF' }
                                 }
                             },
-                            tooltip: {
-                                callbacks: {
-                                    title: tooltipTitleCallback
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#FFFFFF'
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        title: tooltipTitleCallback
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            } else {
-                console.error('Failed to get context for purchasingPowerChart.');
-            }
+                    });
+                } else {
+                    console.error('Failed to get context for purchasingPowerChart.');
+                }
 
-            // Initialize Investment Chart with fixed data
-            const ctxInvestment = document.getElementById('investmentChart').getContext('2d');
-            if (ctxInvestment) {
-                investmentChartInstance = new Chart(ctxInvestment, {
-                    type: 'bar',
-                    data: {
-                        labels: initialInvestmentData.labels,
-                        // Directly use the fixed values from initialInvestmentData
-                        datasets: [{
-                            label: 'القيمة النهائية في 2025 (بالجنيه)',
-                            data: [initialInvestmentData.originalCashValue, initialInvestmentData.originalGoldValue], 
-                            backgroundColor: ['#FF6B6B', '#06D6A0'],
-                            borderColor: ['#FF6B6B', '#06D6A0'],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        indexAxis: 'y',
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                type: 'logarithmic',
-                                title: {
-                                    display: true,
-                                    text: 'القيمة بالجنيه (مقياس لوغاريتمي)',
-                                    color: '#FFFFFF'
-                                },
-                                ticks: { 
-                                    color: '#FFFFFF',
-                                    callback: function(value, index, values) {
-                                        if (value === 1000000 || value === 100000 || value === 10000 || value === 1000 || value === 100 || value === 10) {
-                                            return new Intl.NumberFormat('ar-EG').format(value) + ' جنيه';
+                // Initialize Investment Chart with fixed data
+                const ctxInvestment = document.getElementById('investmentChart').getContext('2d');
+                if (ctxInvestment) {
+                    investmentChartInstance = new Chart(ctxInvestment, {
+                        type: 'bar',
+                        data: {
+                            labels: ['ادخار نقدي "تحت البلاطة"', 'استثمار في الذهب'].map(wrapLabel),
+                            // Directly use the fixed values from fetchedInvestmentData
+                            datasets: [{
+                                label: 'القيمة النهائية في 2025 (بالجنيه)',
+                                data: [fetchedInvestmentData.originalCashValue, fetchedInvestmentData.originalGoldValue], 
+                                backgroundColor: ['#FF6B6B', '#06D6A0'],
+                                borderColor: ['#FF6B6B', '#06D6A0'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            indexAxis: 'y',
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
+                                    type: 'logarithmic',
+                                    title: {
+                                        display: true,
+                                        text: 'القيمة بالجنيه (مقياس لوغاريتمي)',
+                                        color: '#FFFFFF'
+                                    },
+                                    ticks: { 
+                                        color: '#FFFFFF',
+                                        callback: function(value, index, values) {
+                                            if (value === 1000000 || value === 100000 || value === 10000 || value === 1000 || value === 100 || value === 10) {
+                                                return new Intl.NumberFormat('ar-EG').format(value) + ' جنيه';
+                                            }
+                                            return ''; 
                                         }
-                                        return ''; 
                                     }
                                 }
                             },
@@ -963,577 +1006,587 @@
                                 }
                             }
                         }
+                    });
+                } else {
+                    console.error('Failed to get context for investmentChart.');
+                }
+
+                // Call initial updates for display spans
+                const baseAmountInput = document.getElementById('baseAmountInput');
+                
+                // Add null checks for these elements as well, as they are accessed on load
+                if (!baseAmountInput || !startYearInputSelect) { 
+                    console.error("FATAL ERROR: Required input elements not found. Cannot initialize main charts."); 
+                    return; 
+                }
+
+                // Initial update with default values
+                updatePurchasingPowerChart(parseFloat(baseAmountInput.value), startYearInputSelect.value);
+
+                // Event listeners for input fields
+                baseAmountInput.addEventListener('input', (e) => {
+                    const newAmount = parseFloat(e.target.value);
+                    const selectedYear = startYearInputSelect.value;
+                    if (!isNaN(newAmount) && newAmount > 0) {
+                        updatePurchasingPowerChart(newAmount, selectedYear);
+                    } else {
+                        updatePurchasingPowerChart(0, selectedYear);
                     }
                 });
-            } else {
-                console.error('Failed to get context for investmentChart.');
-            }
 
-            // Call initial updates for display spans
-            const baseAmountInput = document.getElementById('baseAmountInput');
-            
-            // Add null checks for these elements as well, as they are accessed on load
-            if (!baseAmountInput || !startYearInputSelect) { 
-                console.error("FATAL ERROR: Required input elements not found. Cannot initialize main charts."); 
-                return; 
-            }
-
-            // Initial update with default values
-            updatePurchasingPowerChart(parseFloat(baseAmountInput.value), startYearInputSelect.value);
-
-            // Event listeners for input fields
-            baseAmountInput.addEventListener('input', (e) => {
-                const newAmount = parseFloat(e.target.value);
-                const selectedYear = startYearInputSelect.value;
-                if (!isNaN(newAmount) && newAmount > 0) {
-                    updatePurchasingPowerChart(newAmount, selectedYear);
-                } else {
-                    updatePurchasingPowerChart(0, selectedYear);
-                }
-            });
-
-            startYearInputSelect.addEventListener('change', (e) => {
-                const newYear = e.target.value;
-                const currentAmount = parseFloat(baseAmountInput.value);
-                if (!isNaN(currentAmount) && currentAmount > 0) {
-                    updatePurchasingPowerChart(currentAmount, newYear);
-                } else {
-                    updatePurchasingPowerChart(0, newYear);
-                }
-            });
+                startYearInputSelect.addEventListener('change', (e) => {
+                    const newYear = e.target.value;
+                    const currentAmount = parseFloat(baseAmountInput.value);
+                    if (!isNaN(currentAmount) && currentAmount > 0) {
+                        updatePurchasingPowerChart(currentAmount, newYear);
+                    } else {
+                        updatePurchasingPowerChart(0, newYear);
+                    }
+                });
 
 
-            // START: Gemini API Integration Logic for Investment Advice Modal
-            const investmentAdviceModal = document.getElementById('investmentAdviceModal');
-            const openInvestmentAdviceModalButton = document.getElementById('openInvestmentAdviceModal');
-            const closeModalButton = document.getElementById('closeModalButton');
-            const getAdviceButton = document.getElementById('getAdviceButton');
-            const riskToleranceSelect = document.getElementById('riskTolerance');
-            const investmentHorizonSelect = document.getElementById('investmentHorizon');
-            const adviceResultDiv = document.getElementById('adviceResult');
-            const loadingSpinner = document.getElementById('loadingSpinner');
+                // START: Gemini API Integration Logic for Investment Advice Modal
+                const investmentAdviceModal = document.getElementById('investmentAdviceModal');
+                const openInvestmentAdviceModalButton = document.getElementById('openInvestmentAdviceModal');
+                const closeModalButton = document.getElementById('closeModalButton');
+                const getAdviceButton = document.getElementById('getAdviceButton');
+                const riskToleranceSelect = document.getElementById('riskTolerance');
+                const investmentHorizonSelect = document.getElementById('investmentHorizon');
+                const adviceResultDiv = document.getElementById('adviceResult');
+                const loadingSpinner = document.getElementById('loadingSpinner');
 
-            // Add null checks for these elements as well
-            if (!investmentAdviceModal) { console.error("FATAL ERROR: Element with ID 'investmentAdviceModal' not found."); return; }
-            if (!openInvestmentAdviceModalButton) { console.error("FATAL ERROR: Element with ID 'openInvestmentAdviceModal' not found."); return; }
-            if (!closeModalButton) { console.error("FATAL ERROR: Element with ID 'closeModalButton' not found."); return; }
-            if (!getAdviceButton) { console.error("FATAL ERROR: Element with ID 'getAdviceButton' not found."); return; }
-            if (!riskToleranceSelect) { console.error("FATAL ERROR: Element with ID 'riskTolerance' not found."); return; }
-            if (!investmentHorizonSelect) { console.error("FATAL ERROR: Element with ID 'investmentHorizon' not found."); return; }
-            if (!adviceResultDiv) { console.error("FATAL ERROR: Element with ID 'adviceResult' not found."); return; }
-            if (!loadingSpinner) { console.error("FATAL ERROR: Element with ID 'loadingSpinner' not found."); return; }
+                // Add null checks for these elements as well
+                if (!investmentAdviceModal) { console.error("FATAL ERROR: Element with ID 'investmentAdviceModal' not found."); return; }
+                if (!openInvestmentAdviceModalButton) { console.error("FATAL ERROR: Element with ID 'openInvestmentAdviceModal' not found."); return; }
+                if (!closeModalButton) { console.error("FATAL ERROR: Element with ID 'closeModalButton' not found."); return; }
+                if (!getAdviceButton) { console.error("FATAL ERROR: Element with ID 'getAdviceButton' not found."); return; }
+                if (!riskToleranceSelect) { console.error("FATAL ERROR: Element with ID 'riskTolerance' not found."); return; }
+                if (!investmentHorizonSelect) { console.error("FATAL ERROR: Element with ID 'investmentHorizon' not found."); return; }
+                if (!adviceResultDiv) { console.error("FATAL ERROR: Element with ID 'adviceResult' not found."); return; }
+                if (!loadingSpinner) { console.error("FATAL ERROR: Element with ID 'loadingSpinner' not found."); return; }
 
 
-            openInvestmentAdviceModalButton.addEventListener('click', () => {
-                investmentAdviceModal.style.display = 'flex';
-                adviceResultDiv.innerHTML = ''; // Clear previous results
-            });
+                openInvestmentAdviceModalButton.addEventListener('click', () => {
+                    investmentAdviceModal.style.display = 'flex';
+                    adviceResultDiv.innerHTML = ''; // Clear previous results
+                });
 
-            closeModalButton.addEventListener('click', () => {
-                investmentAdviceModal.style.display = 'none';
-            });
-
-            window.addEventListener('click', (event) => {
-                if (event.target == investmentAdviceModal) {
+                closeModalButton.addEventListener('click', () => {
                     investmentAdviceModal.style.display = 'none';
-                }
-            });
+                });
 
-            getAdviceButton.addEventListener('click', async () => {
-                const riskTolerance = riskToleranceSelect.value;
-                const investmentHorizon = investmentHorizonSelect.value;
-
-                adviceResultDiv.innerHTML = ''; // Clear previous advice
-                loadingSpinner.classList.remove('hidden'); // Show loading spinner
-
-                const prompt = `بصفتك مستشارًا مالياً في مصر، قدم نصيحة استثمارية موجزة لشخص لديه تحمل مخاطر ${riskTolerance} وأفق استثماري ${investmentHorizon}. ركز على الأصول التي تحمي من التضخم وتناسب السوق المصري. لا تذكر أي أرقام أو عوائد محددة.`;
-
-                console.log('Sending prompt to Gemini API:', prompt); // Debugging: Log the prompt
-                // Log environment variables for debugging API key issue
-                console.log('__app_id:', typeof __app_id !== 'undefined' ? __app_id : 'undefined');
-                console.log('__firebase_config:', typeof __firebase_config !== 'undefined' ? __firebase_config : 'undefined');
-                console.log('__initial_auth_token:', typeof __initial_auth_token !== 'undefined' ? 'present' : 'undefined');
-
-
-                try {
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    // The Canvas environment injects the API key automatically when this is an empty string.
-                    // If you are running this file directly from your desktop, you will need to
-                    // obtain your own Gemini API key and insert it here:
-                    const apiKey = ""; // IMPORTANT: If running locally, replace with your actual Gemini API key, e.g., "YOUR_GEMINI_API_KEY_HERE"
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                    
-                    // If apiKey is still empty here, it means it's running locally without a manually inserted key
-                    // and the Canvas environment is not intercepting the fetch.
-                    if (apiKey === "") {
-                        adviceResultDiv.innerHTML = '<p class="text-red-400">خطأ في مفتاح API: يبدو أنك تقوم بتشغيل الملف محلياً. يرجى الحصول على مفتاح Gemini API الخاص بك وإدخاله يدوياً في الكود (ابحث عن `const apiKey = "";` واستبدلها بمفتاحك).</p>';
-                        console.error('API Key is missing. If running locally, please insert your Gemini API key into the `apiKey` variable in the code.');
-                        loadingSpinner.classList.add('hidden');
-                        return;
+                window.addEventListener('click', (event) => {
+                    if (event.target == investmentAdviceModal) {
+                        investmentAdviceModal.style.display = 'none';
                     }
+                });
 
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    console.log('Gemini API response status:', response.status); // Debugging: Log response status
-                    const result = await response.json();
-                    console.log('Gemini API response data:', result); // Debugging: Log full response data
-                    
-                    if (response.ok && result.candidates && result.candidates.length > 0 &&
-                        result.candidates[0].content && result.candidates[0].content.parts &&
-                        result.candidates[0].content.parts.length > 0) {
-                        const text = result.candidates[0].content.parts[0].text;
-                        adviceResultDiv.innerHTML = `<p>${text}</p>`;
-                    } else {
-                        let errorMessage = 'عذراً، لم أتمكن من الحصول على نصيحة استثمارية. يرجى المحاولة مرة أخرى.';
-                        if (result.error && result.error.message) {
-                            errorMessage = `خطأ من API: ${result.error.message}. يرجى التأكد من أن مفتاح API صحيح أو الاتصال بالدعم.`;
-                        } else if (!response.ok) {
-                            errorMessage = `خطأ في الشبكة أو الخادم: الحالة ${response.status}. يرجى التحقق من اتصالك بالإنترنت.`;
-                        }
-                        console.error('Gemini API returned an error or unexpected structure:', result); // More detailed error logging
-                        adviceResultDiv.innerHTML = `<p class="text-red-400">${errorMessage}</p>`;
-                    }
-                } catch (error) {
-                    console.error('Error calling Gemini API:', error); // Debugging: Log the actual error object
-                    adviceResultDiv.innerHTML = '<p class="text-red-400">حدث خطأ أثناء جلب النصيحة الاستثمارية. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.</p>';
-                    } finally {
-                    loadingSpinner.classList.add('hidden'); // Hide loading spinner
-                }
-            });
-            // END: Gemini API Integration Logic for Investment Advice Modal
+                getAdviceButton.addEventListener('click', async () => {
+                    const riskTolerance = riskToleranceSelect.value;
+                    const investmentHorizon = investmentHorizonSelect.value;
 
-            // START: Certificate Comparison Modal Logic
-            const certificateComparisonModal = document.getElementById('certificateComparisonModal');
-            const openCertificateComparisonModalButton = document.getElementById('openCertificateComparisonModal');
-            const closeCertificateComparisonModalButton = document.getElementById('closeCertificateComparisonModalButton');
-            
-            const certificateComparisonResultDiv = document.getElementById('certificateComparisonResult');
-            const comparisonLoadingSpinner = document.getElementById('comparisonLoadingSpinner');
-            const calculateCertificatesButton = document.getElementById('calculateCertificates');
-            const shareButton = document.getElementById('share-btn');
+                    adviceResultDiv.innerHTML = ''; // Clear previous advice
+                    loadingSpinner.classList.remove('hidden'); // Show loading spinner
+
+                    const prompt = `بصفتك مستشارًا مالياً في مصر، قدم نصيحة استثمارية موجزة لشخص لديه تحمل مخاطر ${riskTolerance} وأفق استثماري ${investmentHorizon}. ركز على الأصول التي تحمي من التضخم وتناسب السوق المصري. لا تذكر أي أرقام أو عوائد محددة.`;
+
+                    console.log('Sending prompt to Gemini API:', prompt); // Debugging: Log the prompt
+                    // Log environment variables for debugging API key issue
+                    console.log('__app_id:', typeof __app_id !== 'undefined' ? __app_id : 'undefined');
+                    console.log('__firebase_config:', typeof __firebase_config !== 'undefined' ? __firebase_config : 'undefined');
+                    console.log('__initial_auth_token:', typeof __initial_auth_token !== 'undefined' ? 'present' : 'undefined');
 
 
-            // Add null checks for these elements
-            if (!certificateComparisonModal) { console.error("FATAL ERROR: Element with ID 'certificateComparisonModal' not found."); return; }
-            if (!openCertificateComparisonModalButton) { console.error("FATAL ERROR: Element with ID 'openCertificateComparisonModal' not found."); return; }
-            if (!closeCertificateComparisonModalButton) { console.error("FATAL ERROR: Element with ID 'closeCertificateComparisonModalButton' not found."); return; }
-            if (!certificateComparisonResultDiv) { console.error("FATAL ERROR: Element with ID 'certificateComparisonResultDiv' not found."); return; }
-            if (!comparisonLoadingSpinner) { console.error("FATAL ERROR: Element with ID 'comparisonLoadingSpinner' not found."); return; }
-            if (!calculateCertificatesButton) { console.error("FATAL ERROR: Element with ID 'calculateCertificates' not found."); return; }
-            if (!shareButton) { console.error("FATAL ERROR: Element with ID 'share-btn' not found."); return; }
-
-
-            openCertificateComparisonModalButton.addEventListener('click', () => {
-                certificateComparisonModal.style.display = 'flex';
-                certificateComparisonResultDiv.innerHTML = ''; // Clear previous results
-                shareButton.classList.add('hidden'); // Hide share button when modal opens
-            });
-
-            closeCertificateComparisonModalButton.addEventListener('click', () => {
-                certificateComparisonModal.style.display = 'none';
-            });
-
-            window.addEventListener('click', (event) => {
-                if (event.target == certificateComparisonModal) {
-                    certificateComparisonModal.style.display = 'none';
-                }
-            });
-
-            // Helper to get number of payouts per year based on frequency
-            const getPayoutPeriodsPerYear = (frequency) => {
-                switch (frequency) {
-                    case 'annually': return 1;
-                    case 'semiannually': return 2;
-                    case 'quarterly': return 4;
-                    case 'monthly': return 12;
-                    default: return 1; // Default to annually
-                }
-            };
-
-            // Helper to translate frequency to Arabic
-            const translateFrequencyToArabic = (frequency) => {
-                switch (frequency) {
-                    case 'annually': return 'سنوي';
-                    case 'semiannually': return 'نصف سنوي';
-                    case 'quarterly': return 'ربع سنوي';
-                    case 'monthly': return 'شهري';
-                    default: return '';
-                }
-            };
-
-            // Function to calculate Scenario 1 and Scenario 2
-            calculateCertificatesButton.addEventListener('click', () => {
-                console.log("Calculate Certificates button clicked.");
-                certificateComparisonResultDiv.innerHTML = '';
-                comparisonLoadingSpinner.classList.remove('hidden');
-                shareButton.classList.add('hidden'); // Hide share button during calculation
-
-
-                try {
-                    const initialAmountComparisonInput = document.getElementById('initialAmountComparison');
-                    if (!initialAmountComparisonInput) { throw new Error("Element with ID 'initialAmountComparison' not found."); }
-                    
-                    const annualDirectRateYear1Input = document.getElementById('annualDirectRateYear1');
-                    if (!annualDirectRateYear1Input) { throw new Error("Element with ID 'annualDirectRateYear1' not found."); }
-                    const annualDirectRateYear2Input = document.getElementById('annualDirectRateYear2');
-                    if (!annualDirectRateYear2Input) { throw new Error("Element with ID 'annualDirectRateYear2' not found."); }
-                    const annualDirectRateYear3Input = document.getElementById('annualDirectRateYear3');
-                    // FIX: Corrected ID to match HTML
-                    if (!annualDirectRateYear3Input) { throw new Error("Element with ID 'annualDirectRateYear3' not found."); } 
-                    
-                    const payoutFrequencyScenario1Select = document.getElementById('payoutFrequencyScenario1');
-                    if (!payoutFrequencyScenario1Select) { throw new Error("Element with ID 'payoutFrequencyScenario1' not found."); }
-                    
-                    const periodicRateYear1Input = document.getElementById('periodicRateYear1');
-                    if (!periodicRateYear1Input) { throw new Error("Element with ID 'periodicRateYear1' not found."); }
-                    const periodicRateYear2Input = document.getElementById('periodicRate2'); // Correct ID here
-                    if (!periodicRateYear2Input) { throw new Error("Element with ID 'periodicRate2' not found."); } // Correct variable name in check
-                    const periodicRateYear3Input = document.getElementById('periodicRateYear3'); // FIX: Corrected ID to match HTML
-                    if (!periodicRateYear3Input) { throw new Error("Element with ID 'periodicRateYear3' not found."); } // Correct variable name in check
-                    
-                    const payoutFrequencySelect = document.getElementById('payoutFrequency');
-                    if (!payoutFrequencySelect) { throw new Error("Element with ID 'payoutFrequency' not found."); }
-                    
-                    const dailyReinvestmentRateInput = document.getElementById('dailyReinvestmentRate');
-                    if (!dailyReinvestmentRateInput) { throw new Error("Element with ID 'dailyReinvestmentRate' not found."); }
-
-                    const initialAmount = parseFloat(initialAmountComparisonInput.value);
-                    const annualDirectRates = [
-                        parseFloat(annualDirectRateYear1Input.value),
-                        parseFloat(annualDirectRateYear2Input.value),
-                        parseFloat(annualDirectRateYear3Input.value)
-                    ];
-                    const periodicRates = [
-                        parseFloat(periodicRateYear1Input.value),
-                        parseFloat(periodicRateYear2Input.value), // Corrected variable name
-                        parseFloat(periodicRateYear3Input.value)  // Corrected variable name
-                    ];
-                    const payoutFrequencyScenario1 = payoutFrequencyScenario1Select.value;
-                    const payoutFrequency = payoutFrequencySelect.value;
-                    const dailyReinvestmentRate = parseFloat(dailyReinvestmentRateInput.value);
-
-                    if (isNaN(initialAmount) || initialAmount <= 0 || 
-                        annualDirectRates.some(isNaN) || periodicRates.some(isNaN) || isNaN(dailyReinvestmentRate)) {
-                        throw new Error("الرجاء إدخال أرقام صحيحة لجميع حقول الشهادات.");
-                    }
-
-                    // Scenario 1 Calculation: Simple interest on principal, paid out periodically, then reinvested daily.
-                    let totalReinvestedEarningsScenario1 = 0;
-                    const dailyReinvestmentRateFactor = (1 + dailyReinvestmentRate / 100 / 365);
-                    const payoutsPerYearScenario1 = getPayoutPeriodsPerYear(payoutFrequencyScenario1);
-                    const daysBetweenPayoutsScenario1 = 365 / payoutsPerYearScenario1;
-
-                    for (let year = 0; year < 3; year++) {
-                        const currentAnnualRate = annualDirectRates[year];
-                        const annualSimpleInterest = initialAmount * (currentAnnualRate / 100);
-                        const payoutAmountPerPeriod = annualSimpleInterest / payoutsPerYearScenario1;
+                    try {
+                        let chatHistory = [];
+                        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                        const payload = { contents: chatHistory };
+                        // The Canvas environment injects the API key automatically when this is an empty string.
+                        // If you are running this file directly from your desktop, you will need to
+                        // obtain your own Gemini API key and insert it here:
+                        const apiKey = ""; // IMPORTANT: If running locally, replace with your actual Gemini API key, e.g., "YOUR_GEMINI_API_KEY_HERE"
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                         
-                        if (isNaN(payoutAmountPerPeriod) || !isFinite(payoutAmountPerPeriod)) {
-                            throw new Error(`خطأ في حساب الفائدة السنوية للسيناريو الأول في السنة ${year + 1}.`);
+                        // If apiKey is still empty here, it means it's running locally without a manually inserted key
+                        // and the Canvas environment is not intercepting the fetch.
+                        if (apiKey === "") {
+                            adviceResultDiv.innerHTML = '<p class="text-red-400">خطأ في مفتاح API: يبدو أنك تقوم بتشغيل الملف محلياً. يرجى الحصول على مفتاح Gemini API الخاص بك وإدخاله يدوياً في الكود (ابحث عن `const apiKey = "";` واستبدلها بمفتاحك).</p>';
+                            console.error('API Key is missing. If running locally, please insert your Gemini API key into the `apiKey` variable in the code.');
+                            loadingSpinner.classList.add('hidden');
+                            return;
                         }
 
-                        for (let i = 0; i < payoutsPerYearScenario1; i++) {
-                            const daysToThisPayout = (year * 365) + ((i + 1) * daysBetweenPayoutsScenario1);
-                            const daysRemainingForCompounding = (3 * 365) - daysToThisPayout;
-                            const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
-                            
-                            const futureValueOfPayout = payoutAmountPerPeriod * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
-                            if (isNaN(futureValueOfPayout) || !isFinite(futureValueOfPayout)) {
-                                throw new Error(`خطأ في حساب القيمة المستقبلية للدفعة في السيناريو الأول، السنة ${year + 1}، الدفعة ${i + 1}.`);
-                            }
-                            totalReinvestedEarningsScenario1 += futureValueOfPayout;
-                        }
-                    }
-                    finalAmountScenario1Global = initialAmount + totalReinvestedEarningsScenario1;
-                    const roiScenario1 = ((finalAmountScenario1Global - initialAmount) / initialAmount) * 100;
-                    const cagrScenario1 = (Math.pow(finalAmountScenario1Global / initialAmount, 1/3) - 1) * 100;
-
-                    // Scenario 2 Calculation: Simple interest on principal, paid out periodically, then reinvested daily.
-                    let totalReinvestedEarningsScenario2 = 0;
-                    const payoutsPerYearScenario2 = getPayoutPeriodsPerYear(payoutFrequency);
-                    const daysBetweenPayoutsScenario2 = 365 / payoutsPerYearScenario2;
-
-                    for (let year = 0; year < 3; year++) {
-                        const annualPeriodicRate = periodicRates[year];
-                        const annualSimpleInterestForScenario2 = initialAmount * (annualPeriodicRate / 100); 
-                        const payoutThisPeriod = annualSimpleInterestForScenario2 / payoutsPerYearScenario2;
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
                         
-                        if (isNaN(payoutThisPeriod) || !isFinite(payoutThisPeriod)) { // Corrected typo here
-                            throw new Error(`خطأ في حساب الفائدة السنوية للسيناريو الثاني في السنة ${year + 1}.`);
-                        }
-
-                        for (let i = 0; i < payoutsPerYearScenario2; i++) {
-                            const daysToThisPayout = (year * 365) + ((i + 1) * daysBetweenPayoutsScenario2);
-                            const daysRemainingForCompounding = (3 * 365) - daysToThisPayout;
-                            const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
-
-                            const futureValueOfPayout = payoutThisPeriod * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
-                            if (isNaN(futureValueOfPayout) || !isFinite(futureValueOfPayout)) {
-                                throw new Error(`خطأ في حساب القيمة المستقبلية للدفعة في السيناريو الثاني، السنة ${year + 1}، الدفعة ${i + 1}.`);
-                            }
-                            totalReinvestedEarningsScenario2 += futureValueOfPayout;
-                        }
-                    }
-                    finalAmountScenario2Global = initialAmount + totalReinvestedEarningsScenario2;
-
-                    const roiScenario2 = ((finalAmountScenario2Global - initialAmount) / initialAmount) * 100;
-                    const cagrScenario2 = (Math.pow(finalAmountScenario2Global / initialAmount, 1/3) - 1) * 100;
-
-                    // Get Arabic frequency for Scenario 1
-                    const arabicPayoutFrequencyScenario1 = translateFrequencyToArabic(payoutFrequencyScenario1);
-                    const arabicPayoutFrequencyScenario2 = translateFrequencyToArabic(payoutFrequency);
-
-
-                    let resultHtml = `
-                        <p class="mb-2">المبلغ الأولي: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(initialAmount)}</p>
-                        <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الأول - فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1}):</strong></p>
-                        <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario1Global)}</p>
-                        <p class="text-base mb-2">العائد علي الاستثمار ROI: ${roiScenario1.toFixed(2)}%</p>
-                        <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario1.toFixed(2)}%</p>
-
-                        <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثاني - فائدة دورية مع إعادة استثمار):</strong></p>
-                        <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario2Global)}</p>
-                        <p class="text-base mb-2">العئد علي الاستثمار ROI: ${roiScenario2.toFixed(2)}%</p>
-                        <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario2.toFixed(2)}%</p>
-                    `;
-
-                    // Store all relevant data for loan calculation based on user's choice
-                    scenario1CertData = { rates: annualDirectRates, payoutFrequency: payoutFrequencyScenario1 };
-                    scenario2CertData = { rates: periodicRates, payoutFrequency: payoutFrequency };
-                    
-                    // Determine the best scenario between 1 and 2 (for display purposes only)
-                    let bestScenarioText = '';
-                    let bestFinalAmount = 0;
-
-                    if (finalAmountScenario1Global > finalAmountScenario2Global) {
-                        bestScenarioText = `السيناريو الأول (فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1})`;
-                        bestFinalAmount = finalAmountScenario1Global;
-                    } else if (finalAmountScenario2Global > finalAmountScenario1Global) {
-                        bestScenarioText = `السيناريو الثاني (فائدة دورية تصرف ${arabicPayoutFrequencyScenario2} مع إعادة استثمار)`;
-                        bestFinalAmount = finalAmountScenario2Global;
-                    } else {
-                        bestScenarioText = 'كلا السيناريوهين متساويين في العائد';
-                        bestFinalAmount = finalAmountScenario1Global;
-                    }
-
-                    resultHtml += `<p class="text-green-400 font-bold text-xl">أفضل سيناريو بين الشهادات: ${bestScenarioText}!</p>`;
-
-                    certificateComparisonResultDiv.innerHTML = resultHtml;
-                    console.log("Certificate comparison completed.");
-
-                    // Show share button and set its data attributes
-                    shareButton.classList.remove('hidden');
-                    shareButton.dataset.bestScenarioText = bestScenarioText;
-                    shareButton.dataset.finalAmount = new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(bestFinalAmount);
-
-
-                } catch (error) {
-                    console.error("An error occurred during certificate comparison calculation:", error);
-                    certificateComparisonResultDiv.innerHTML = `<p class="text-red-400">حدث خطأ أثناء حساب مقارنة الشهادات: ${error.message}. يرجى مراجعة المدخلات والمحاولة مرة أخرى.</p>`;
-                    shareButton.classList.add('hidden'); // Hide share button on error
-                } finally {
-                    comparisonLoadingSpinner.classList.add('hidden');
-                }
-            });
-            // END: Certificate Comparison Modal Logic
-
-            // START: Loan Calculator Modal Logic
-            const loanCalculatorModal = document.getElementById('loanCalculatorModal');
-            const openLoanCalculatorModalButton = document.getElementById('openLoanCalculatorModal');
-            const closeLoanCalculatorModalButton = document.getElementById('closeLoanCalculatorModalButton');
-            const loanCalculatorLoadingSpinner = document.getElementById('loanCalculatorLoadingSpinner');
-            const calculateLoanScenarioButton = document.getElementById('calculateLoanScenarioButton');
-            const loanScenarioResultDiv = document.getElementById('loanScenarioResult');
-
-            // Add null checks for these elements
-            if (!loanCalculatorModal) { console.error("FATAL ERROR: Element with ID 'loanCalculatorModal' not found."); return; }
-            if (!openLoanCalculatorModalButton) { console.error("FATAL ERROR: Element with ID 'openInvestmentAdviceModal' not found."); return; }
-            if (!closeLoanCalculatorModalButton) { console.error("FATAL ERROR: Element with ID 'closeLoanCalculatorModalButton' not found."); return; }
-            if (!loanCalculatorLoadingSpinner) { console.error("FATAL ERROR: Element with ID 'loanCalculatorLoadingSpinner' not found."); return; }
-            if (!calculateLoanScenarioButton) { console.error("FATAL ERROR: Element with ID 'calculateLoanScenarioButton' not found."); return; }
-            if (!loanScenarioResultDiv) { console.error("FATAL ERROR: Element with ID 'loanScenarioResultDiv' not found."); return; }
-
-            // Elements within the loan calculator modal
-            const initialAmountLoanInput = document.getElementById('initialAmountLoan');
-            const loanCertTypeSelect = document.getElementById('loanCertType');
-            const loanAnnualRateInput = document.getElementById('loanAnnualRate');
-            const loanDailyReinvestmentRateInput = document.getElementById('loanDailyReinvestmentRate');
-
-            if (!initialAmountLoanInput) { console.error("FATAL ERROR: Element with ID 'initialAmountLoan' not found."); return; }
-            if (!loanCertTypeSelect) { console.error("FATAL ERROR: Element with ID 'loanCertType' not found."); return; }
-            if (!loanAnnualRateInput) { console.error("FATAL ERROR: Element with ID 'loanAnnualRate' not found."); return; }
-            if (!loanDailyReinvestmentRateInput) { console.error("FATAL ERROR: Element with ID 'loanDailyReinvestmentRate' not found."); return; }
-
-
-            openLoanCalculatorModalButton.addEventListener('click', () => {
-                loanCalculatorModal.style.display = 'flex';
-                loanScenarioResultDiv.innerHTML = ''; // Clear previous results
-            });
-
-            closeLoanCalculatorModalButton.addEventListener('click', () => {
-                loanCalculatorModal.style.display = 'none';
-            });
-
-            window.addEventListener('click', (event) => {
-                if (event.target == loanCalculatorModal) {
-                    loanCalculatorModal.style.display = 'none';
-                }
-            });
-
-            // Function to calculate Scenario 3 (Loan)
-            calculateLoanScenarioButton.addEventListener('click', () => {
-                console.log("Calculate Loan Scenario button clicked.");
-                loanScenarioResultDiv.innerHTML = '';
-                loanCalculatorLoadingSpinner.classList.remove('hidden');
-
-                try {
-                    const initialAmount = parseFloat(initialAmountLoanInput.value);
-                    const loanAnnualRate = parseFloat(loanAnnualRateInput.value);
-                    const dailyReinvestmentRate = parseFloat(loanDailyReinvestmentRateInput.value);
-                    const loanCertType = loanCertTypeSelect.value; // Get selected certificate type for loan
-
-                    if (isNaN(initialAmount) || initialAmount <= 0 || isNaN(loanAnnualRate) || isNaN(dailyReinvestmentRate)) {
-                        throw new Error("الرجاء إدخال أرقام صحيحة لجميع حقول القرض وإعادة الاستثمار.");
-                    }
-
-                    let certRatesForLoan = [];
-                    let certPayoutFrequencyForLoan = '';
-
-                    if (loanCertType === 'scenario1') {
-                        certRatesForLoan = scenario1CertData.rates;
-                        certPayoutFrequencyForLoan = scenario1CertData.payoutFrequency;
-                    } else if (loanCertType === 'scenario2') {
-                        certRatesForLoan = scenario2CertData.rates;
-                        certPayoutFrequencyForLoan = scenario2CertData.payoutFrequency;
-                    }
-
-                    if (certRatesForLoan.length === 0 || certPayoutFrequencyForLoan === '') {
-                        throw new Error("يرجى حساب مقارنة الشهادات أولاً في النافذة الأخرى لتحديد نوع الشهادة للقرض.");
-                    }
-
-                    const certPeriodsPerYearForLoan = getPayoutPeriodsPerYear(certPayoutFrequencyForLoan);
-                    
-                    // Scenario 3 Calculation: Certificate with loan, periodic payouts, and reinvestment of net cash flow
-                    let totalReinvestedSurplusesScenario3 = 0;
-                    let totalUserContributionScenario3 = 0;
-                    const loanPrincipal = initialAmount * 0.90; // 90% of certificate value
-                    const loanTermMonths = 3 * 12; // 3 years fixed
-                    const loanMonthlyRate = loanAnnualRate / 100 / 12;
-
-                    let monthlyLoanInstallment = 0;
-                    if (loanMonthlyRate > 0) {
-                        monthlyLoanInstallment = (loanPrincipal * loanMonthlyRate) / (1 - Math.pow(1 + loanMonthlyRate, -loanTermMonths));
-                    } else {
-                        monthlyLoanInstallment = loanPrincipal / loanTermMonths;
-                    }
-                    
-                    if (isNaN(monthlyLoanInstallment) || !isFinite(monthlyLoanInstallment)) {
-                        throw new Error("خطأ في حساب قسط القرض الشهري. يرجى مراجعة نسبة فائدة القرض.");
-                    }
-                    console.log(`Scenario 3 - Loan Principal: ${loanPrincipal.toFixed(2)}, Monthly Loan Rate: ${(loanMonthlyRate*100).toFixed(4)}%, Monthly Installment: ${monthlyLoanInstallment.toFixed(2)}`);
-                    
-                    const dailyReinvestmentRateFactor = (1 + dailyReinvestmentRate / 100 / 365);
-
-
-                    // Monthly loop for 3 years (36 months)
-                    for (let month = 0; month < loanTermMonths; month++) {
-                        const currentYearIndex = Math.floor(month / 12);
-                        // Ensure currentYearIndex does not exceed array bounds
-                        if (currentYearIndex >= certRatesForLoan.length) {
-                            console.warn(`Year index ${currentYearIndex} out of bounds for certRatesForLoan. Using last available rate.`);
-                            // Fallback to the last available rate if year index is out of bounds
-                            certRatesForLoan[currentYearIndex] = certRatesForLoan[certRatesForLoan.length - 1];
-                        }
-                        const currentAnnualCertRate = certRatesForLoan[currentYearIndex]; // Certificate rate from selected scenario
-
-                        let periodicCertIncome = 0;
-                        // Check if it's a payout period for the certificate
-                        if (certPeriodsPerYearForLoan > 0 && (month % (12 / certPeriodsPerYearForLoan) === 0)) {
-                            periodicCertIncome = initialAmount * (currentAnnualCertRate / 100) / certPeriodsPerYearForLoan;
-                        }
-                        if (isNaN(periodicCertIncome) || !isFinite(periodicCertIncome)) {
-                            throw new Error(`خطأ في حساب العائد الدوري للشهادة في السيناريو الثالث، الشهر ${month + 1}.`);
-                        }
-
-                        const netCashFlowThisMonth = periodicCertIncome - monthlyLoanInstallment;
-
-                        console.log(`Scenario 3 - Month ${month + 1}: Cert Income = ${periodicCertIncome.toFixed(2)}, Loan Installment = ${monthlyLoanInstallment.toFixed(2)}, Net Cash Flow = ${netCashFlowThisMonth.toFixed(2)}`);
-
-                        if (netCashFlowThisMonth > 0) {
-                            // Surplus: Reinvest this amount daily from this month until the end of 3 years
-                            const daysPassed = (month + 1) * (365 / 12); // Approximate days passed until end of this month
-                            const daysRemainingForCompounding = (3 * 365) - daysPassed;
-                            const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
-                            
-                            const futureValueOfSurplus = netCashFlowThisMonth * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
-                            if (isNaN(futureValueOfSurplus) || !isFinite(futureValueOfSurplus)) {
-                                throw new Error(`خطأ في حساب القيمة المستقبلية للفائض في السيناريو الثالث، الشهر ${month + 1}.`);
-                            }
-                            totalReinvestedSurplusesScenario3 += futureValueOfSurplus;
-                            console.log(`  Surplus Reinvested: Days Remaining = ${actualDaysRemaining.toFixed(0)}, FV of Surplus = ${futureValueOfSurplus.toFixed(2)}`);
+                        console.log('Gemini API response status:', response.status); // Debugging: Log response status
+                        const result = await response.json();
+                        console.log('Gemini API response data:', result); // Debugging: Log full response data
+                        
+                        if (response.ok && result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            adviceResultDiv.innerHTML = `<p>${text}</p>`;
                         } else {
-                            // Deficit: User adds this amount from pocket
-                            totalUserContributionScenario3 += Math.abs(netCashFlowThisMonth);
-                            console.log(`  Deficit: User contributes ${Math.abs(netCashFlowThisMonth).toFixed(2)}`);
+                            let errorMessage = 'عذراً، لم أتمكن من الحصول على نصيحة استثمارية. يرجى المحاولة مرة أخرى.';
+                            if (result.error && result.error.message) {
+                                errorMessage = `خطأ من API: ${result.error.message}. يرجى التأكد من أن مفتاح API صحيح أو الاتصال بالدعم.`;
+                            } else if (!response.ok) {
+                                errorMessage = `خطأ في الشبكة أو الخادم: الحالة ${response.status}. يرجى التحقق من اتصالك بالإنترنت.`;
+                            }
+                            console.error('Gemini API returned an error or unexpected structure:', result); // More detailed error logging
+                            adviceResultDiv.innerHTML = `<p class="text-red-400">${errorMessage}</p>`;
                         }
+                    } catch (error) {
+                        console.error('Error calling Gemini API:', error); // Debugging: Log the actual error object
+                        adviceResultDiv.innerHTML = '<p class="text-red-400">حدث خطأ أثناء جلب النصيحة الاستثمارية. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.</p>';
+                        } finally {
+                        loadingSpinner.classList.add('hidden'); // Hide loading spinner
                     }
+                });
+                // END: Gemini API Integration Logic for Investment Advice Modal
 
-                    const finalAmountScenario3 = initialAmount + totalReinvestedSurplusesScenario3; // Certificate principal returned + reinvested surpluses
-                    const totalInvestmentScenario3 = initialAmount + totalUserContributionScenario3; // Initial certificate + user's added money
+                // START: Certificate Comparison Modal Logic
+                const certificateComparisonModal = document.getElementById('certificateComparisonModal');
+                const openCertificateComparisonModalButton = document.getElementById('openCertificateComparisonModal');
+                const closeCertificateComparisonModalButton = document.getElementById('closeCertificateComparisonModalButton');
+                
+                const certificateComparisonResultDiv = document.getElementById('certificateComparisonResult');
+                const comparisonLoadingSpinner = document.getElementById('comparisonLoadingSpinner');
+                const calculateCertificatesButton = document.getElementById('calculateCertificates');
+                const shareButton = document.getElementById('share-btn');
 
-                    if (totalInvestmentScenario3 <= 0) {
-                        throw new Error("إجمالي الاستثمار للسيناريو الثالث غير صالح للحساب (قد يكون صفر أو أقل).");
+
+                // Add null checks for these elements
+                if (!certificateComparisonModal) { console.error("FATAL ERROR: Element with ID 'certificateComparisonModal' not found."); return; }
+                if (!openCertificateComparisonModalButton) { console.error("FATAL ERROR: Element with ID 'openCertificateComparisonModal' not found."); return; }
+                if (!closeCertificateComparisonModalButton) { console.error("FATAL ERROR: Element with ID 'closeCertificateComparisonModalButton' not found."); return; }
+                if (!certificateComparisonResultDiv) { console.error("FATAL ERROR: Element with ID 'certificateComparisonResultDiv' not found."); return; }
+                if (!comparisonLoadingSpinner) { console.error("FATAL ERROR: Element with ID 'comparisonLoadingSpinner' not found."); return; }
+                if (!calculateCertificatesButton) { console.error("FATAL ERROR: Element with ID 'calculateCertificates' not found."); return; }
+                if (!shareButton) { console.error("FATAL ERROR: Element with ID 'share-btn' not found."); return; }
+
+
+                openCertificateComparisonModalButton.addEventListener('click', () => {
+                    certificateComparisonModal.style.display = 'flex';
+                    certificateComparisonResultDiv.innerHTML = ''; // Clear previous results
+                    shareButton.classList.add('hidden'); // Hide share button when modal opens
+                });
+
+                closeCertificateComparisonModalButton.addEventListener('click', () => {
+                    certificateComparisonModal.style.display = 'none';
+                });
+
+                window.addEventListener('click', (event) => {
+                    if (event.target == certificateComparisonModal) {
+                        certificateComparisonModal.style.display = 'none';
                     }
+                });
 
-                    const roiScenario3 = ((finalAmountScenario3 - totalInvestmentScenario3) / totalInvestmentScenario3) * 100;
-                    const cagrScenario3 = (Math.pow(finalAmountScenario3 / totalInvestmentScenario3, 1/3) - 1) * 100;
-                    console.log("Scenario 3 Results:", { finalAmountScenario3: finalAmountScenario3.toFixed(2), totalUserContributionScenario3: totalUserContributionScenario3.toFixed(2), roiScenario3: roiScenario3.toFixed(2), cagrScenario3: cagrScenario3.toFixed(2) });
-
-                    // Get Arabic frequency for the selected loan certificate type
-                    const arabicLoanCertPayoutFrequency = translateFrequencyToArabic(certPayoutFrequencyForLoan);
-
-                    let loanResultHtml = `
-                        <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثالث - شهادة بقرض بضمان شهادة تصرف ${arabicLoanCertPayoutFrequency}):</strong></p>
-                        <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario3)}</p>
-                        <p class="text-base mb-2">إجمالي مساهمة المستخدم الإضافية: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(totalUserContributionScenario3.toFixed(2))}</p>
-                        <p class="text-base mb-2">العائد علي الاستثمار ROI: ${roiScenario3.toFixed(2)}%</p>
-                        <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario3.toFixed(2)}%</p>
-                    `;
-
-                    // Provide advice on whether to take the loan
-                    const maxFinalAmountOfCertificates = Math.max(finalAmountScenario1Global, finalAmountScenario2Global);
-                    let loanAdvice = '';
-
-                    // Compare the final value of scenario 3 against the best of scenario 1/2
-                    if (finalAmountScenario3 > maxFinalAmountOfCertificates && totalUserContributionScenario3 <= (initialAmount * 0.05)) { // Small user contribution tolerance
-                        loanAdvice = '<p class="text-green-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو قد يكون مفيداً، حيث أدى إلى عائد نهائي أعلى مع مساهمة إضافية محدودة.</p>';
-                    } else if (finalAmountScenario3 > maxFinalAmountOfCertificates && totalUserContributionScenario3 > (initialAmount * 0.05)) {
-                        loanAdvice = '<p class="text-yellow-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو أدى إلى عائد نهائي أعلى، ولكن تطلب مساهمة إضافية كبيرة. يرجى مراجعة قدرتك على تغطية هذه المساهمات.</p>';
+                // Helper to get number of payouts per year based on frequency
+                const getPayoutPeriodsPerYear = (frequency) => {
+                    switch (frequency) {
+                        case 'annually': return 1;
+                        case 'semiannually': return 2;
+                        case 'quarterly': return 4;
+                        case 'monthly': return 12;
+                        default: return 1; // Default to annually
                     }
-                    else if (finalAmountScenario3 < maxFinalAmountOfCertificates) {
-                        loanAdvice = '<p class="text-red-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو أدى إلى عائد نهائي أقل. قد لا يكون الخيار الأمثل لك.</p>';
-                    } else {
-                        loanAdvice = '<p class="text-gray-400 font-bold text-xl">نصيحة: العائد من هذا السيناريو قريب من أفضل سيناريوهات الشهادات الأخرى. يرجى مراجعة التفاصيل لاتخاذ القرار.</p>';
+                };
+
+                // Helper to translate frequency to Arabic
+                const translateFrequencyToArabic = (frequency) => {
+                    switch (frequency) {
+                        case 'annually': return 'سنوي';
+                        case 'semiannually': return 'نصف سنوي';
+                        case 'quarterly': return 'ربع سنوي';
+                        case 'monthly': return 'شهري';
+                        default: return '';
                     }
+                };
 
-                    loanResultHtml += loanAdvice;
-                    loanScenarioResultDiv.innerHTML = loanResultHtml;
-                    console.log("Loan scenario calculation completed and advice displayed.");
+                // Function to calculate Scenario 1 and Scenario 2
+                calculateCertificatesButton.addEventListener('click', () => {
+                    console.log("Calculate Certificates button clicked.");
+                    certificateComparisonResultDiv.innerHTML = '';
+                    comparisonLoadingSpinner.classList.remove('hidden');
+                    shareButton.classList.add('hidden'); // Hide share button during calculation
 
-                } catch (error) {
-                    console.error("An error occurred during loan scenario calculation:", error);
-                    loanScenarioResultDiv.innerHTML = `<p class="text-red-400">حدث خطأ أثناء حساب وضع القرض: ${error.message}. يرجى مراجعة المدخلات والمحاولة مرة أخرى.</p>`;
-                } finally {
-                    loanCalculatorLoadingSpinner.classList.add('hidden');
-                }
-            });
-            // END: Loan Calculator Modal Logic
+
+                    try {
+                        const initialAmountComparisonInput = document.getElementById('initialAmountComparison');
+                        if (!initialAmountComparisonInput) { throw new Error("Element with ID 'initialAmountComparison' not found."); }
+                        
+                        const annualDirectRateYear1Input = document.getElementById('annualDirectRateYear1');
+                        if (!annualDirectRateYear1Input) { throw new Error("Element with ID 'annualDirectRateYear1' not found."); }
+                        const annualDirectRateYear2Input = document.getElementById('annualDirectRateYear2');
+                        if (!annualDirectRateYear2Input) { throw new Error("Element with ID 'annualDirectRateYear2' not found."); }
+                        const annualDirectRateYear3Input = document.getElementById('annualDirectRateYear3');
+                        // FIX: Corrected ID to match HTML
+                        if (!annualDirectRateYear3Input) { throw new Error("Element with ID 'annualDirectRateYear3' not found."); } 
+                        
+                        const payoutFrequencyScenario1Select = document.getElementById('payoutFrequencyScenario1');
+                        if (!payoutFrequencyScenario1Select) { throw new Error("Element with ID 'payoutFrequencyScenario1' not found."); }
+                        
+                        const periodicRateYear1Input = document.getElementById('periodicRateYear1');
+                        if (!periodicRateYear1Input) { throw new Error("Element with ID 'periodicRateYear1' not found."); }
+                        const periodicRateYear2Input = document.getElementById('periodicRate2'); // Correct ID here
+                        if (!periodicRateYear2Input) { throw new Error("Element with ID 'periodicRate2' not found."); } // Correct variable name in check
+                        const periodicRateYear3Input = document.getElementById('periodicRateYear3'); // FIX: Corrected ID to match HTML
+                        if (!periodicRateYear3Input) { throw new Error("Element with ID 'periodicRateYear3' not found."); } // Correct variable name in check
+                        
+                        const payoutFrequencySelect = document.getElementById('payoutFrequency');
+                        if (!payoutFrequencySelect) { throw new Error("Element with ID 'payoutFrequency' not found."); }
+                        
+                        const dailyReinvestmentRateInput = document.getElementById('dailyReinvestmentRate');
+                        if (!dailyReinvestmentRateInput) { throw new Error("Element with ID 'dailyReinvestmentRate' not found."); }
+
+                        const initialAmount = parseFloat(initialAmountComparisonInput.value);
+                        const annualDirectRates = [
+                            parseFloat(annualDirectRateYear1Input.value),
+                            parseFloat(annualDirectRateYear2Input.value),
+                            parseFloat(annualDirectRateYear3Input.value)
+                        ];
+                        const periodicRates = [
+                            parseFloat(periodicRateYear1Input.value),
+                            parseFloat(periodicRateYear2Input.value), // Corrected variable name
+                            parseFloat(periodicRateYear3Input.value)  // Corrected variable name
+                        ];
+                        const payoutFrequencyScenario1 = payoutFrequencyScenario1Select.value;
+                        const payoutFrequency = payoutFrequencySelect.value;
+                        const dailyReinvestmentRate = parseFloat(dailyReinvestmentRateInput.value);
+
+                        if (isNaN(initialAmount) || initialAmount <= 0 || 
+                            annualDirectRates.some(isNaN) || periodicRates.some(isNaN) || isNaN(dailyReinvestmentRate)) {
+                            throw new Error("الرجاء إدخال أرقام صحيحة لجميع حقول الشهادات.");
+                        }
+
+                        // Scenario 1 Calculation: Simple interest on principal, paid out periodically, then reinvested daily.
+                        let totalReinvestedEarningsScenario1 = 0;
+                        const dailyReinvestmentRateFactor = (1 + dailyReinvestmentRate / 100 / 365);
+                        const payoutsPerYearScenario1 = getPayoutPeriodsPerYear(payoutFrequencyScenario1);
+                        const daysBetweenPayoutsScenario1 = 365 / payoutsPerYearScenario1;
+
+                        for (let year = 0; year < 3; year++) {
+                            const currentAnnualRate = annualDirectRates[year];
+                            const annualSimpleInterest = initialAmount * (currentAnnualRate / 100);
+                            const payoutAmountPerPeriod = annualSimpleInterest / payoutsPerYearScenario1;
+                            
+                            if (isNaN(payoutAmountPerPeriod) || !isFinite(payoutAmountPerPeriod)) {
+                                throw new Error(`خطأ في حساب الفائدة السنوية للسيناريو الأول في السنة ${year + 1}.`);
+                            }
+
+                            for (let i = 0; i < payoutsPerYearScenario1; i++) {
+                                const daysToThisPayout = (year * 365) + ((i + 1) * daysBetweenPayoutsScenario1);
+                                const daysRemainingForCompounding = (3 * 365) - daysToThisPayout;
+                                const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
+                                
+                                const futureValueOfPayout = payoutAmountPerPeriod * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
+                                if (isNaN(futureValueOfPayout) || !isFinite(futureValueOfPayout)) {
+                                    throw new Error(`خطأ في حساب القيمة المستقبلية للدفعة في السيناريو الأول، السنة ${year + 1}، الدفعة ${i + 1}.`);
+                                }
+                                totalReinvestedEarningsScenario1 += futureValueOfPayout;
+                            }
+                        }
+                        finalAmountScenario1Global = initialAmount + totalReinvestedEarningsScenario1;
+                        const roiScenario1 = ((finalAmountScenario1Global - initialAmount) / initialAmount) * 100;
+                        const cagrScenario1 = (Math.pow(finalAmountScenario1Global / initialAmount, 1/3) - 1) * 100;
+
+                        // Scenario 2 Calculation: Simple interest on principal, paid out periodically, then reinvested daily.
+                        let totalReinvestedEarningsScenario2 = 0;
+                        const payoutsPerYearScenario2 = getPayoutPeriodsPerYear(payoutFrequency);
+                        const daysBetweenPayoutsScenario2 = 365 / payoutsPerYearScenario2;
+
+                        for (let year = 0; year < 3; year++) {
+                            const annualPeriodicRate = periodicRates[year];
+                            const annualSimpleInterestForScenario2 = initialAmount * (annualPeriodicRate / 100); 
+                            const payoutThisPeriod = annualSimpleInterestForScenario2 / payoutsPerYearScenario2;
+                            
+                            if (isNaN(payoutThisPeriod) || !isFinite(payoutThisPeriod)) { // Corrected typo here
+                                throw new Error(`خطأ في حساب الفائدة السنوية للسيناريو الثاني في السنة ${year + 1}.`);
+                            }
+
+                            for (let i = 0; i < payoutsPerYearScenario2; i++) {
+                                const daysToThisPayout = (year * 365) + ((i + 1) * daysBetweenPayoutsScenario2);
+                                const daysRemainingForCompounding = (3 * 365) - daysToThisPayout;
+                                const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
+
+                                const futureValueOfPayout = payoutThisPeriod * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
+                                if (isNaN(futureValueOfPayout) || !isFinite(futureValueOfPayout)) {
+                                    throw new Error(`خطأ في حساب القيمة المستقبلية للدفعة في السيناريو الثاني، السنة ${year + 1}، الدفعة ${i + 1}.`);
+                                }
+                                totalReinvestedEarningsScenario2 += futureValueOfPayout;
+                            }
+                        }
+                        finalAmountScenario2Global = initialAmount + totalReinvestedEarningsScenario2;
+
+                        const roiScenario2 = ((finalAmountScenario2Global - initialAmount) / initialAmount) * 100;
+                        const cagrScenario2 = (Math.pow(finalAmountScenario2Global / initialAmount, 1/3) - 1) * 100;
+
+                        // Get Arabic frequency for Scenario 1
+                        const arabicPayoutFrequencyScenario1 = translateFrequencyToArabic(payoutFrequencyScenario1);
+                        const arabicPayoutFrequencyScenario2 = translateFrequencyToArabic(payoutFrequency);
+
+
+                        let resultHtml = `
+                            <p class="mb-2">المبلغ الأولي: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(initialAmount)}</p>
+                            <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الأول - فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1}):</strong></p>
+                            <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario1Global)}</p>
+                            <p class="text-base mb-2">ROI: ${roiScenario1.toFixed(2)}%</p>
+                            <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario1.toFixed(2)}%</p>
+
+                            <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثاني - فائدة دورية مع إعادة استثمار):</strong></p>
+                            <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario2Global)}</p>
+                            <p class="text-base mb-2">ROI: ${roiScenario2.toFixed(2)}%</p>
+                            <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario2.toFixed(2)}%</p>
+                        `;
+
+                        // Store all relevant data for loan calculation based on user's choice
+                        scenario1CertData = { rates: annualDirectRates, payoutFrequency: payoutFrequencyScenario1 };
+                        scenario2CertData = { rates: periodicRates, payoutFrequency: payoutFrequency };
+                        
+                        // Determine the best scenario between 1 and 2 (for display purposes only)
+                        let bestScenarioText = '';
+                        let bestFinalAmount = 0;
+
+                        if (finalAmountScenario1Global > finalAmountScenario2Global) {
+                            bestScenarioText = `السيناريو الأول (فائدة سنوية تصرف ${arabicPayoutFrequencyScenario1})`;
+                            bestFinalAmount = finalAmountScenario1Global;
+                        } else if (finalAmountScenario2Global > finalAmountScenario1Global) {
+                            bestScenarioText = `السيناريو الثاني (فائدة دورية تصرف ${arabicPayoutFrequencyScenario2} مع إعادة استثمار)`;
+                            bestFinalAmount = finalAmountScenario2Global;
+                        } else {
+                            bestScenarioText = 'كلا السيناريوهين متساويين في العائد';
+                            bestFinalAmount = finalAmountScenario1Global;
+                        }
+
+                        resultHtml += `<p class="text-green-400 font-bold text-xl">أفضل سيناريو بين الشهادات: ${bestScenarioText}!</p>`;
+
+                        certificateComparisonResultDiv.innerHTML = resultHtml;
+                        console.log("Certificate comparison completed.");
+
+                        // Show share button and set its data attributes
+                        shareButton.classList.remove('hidden');
+                        shareButton.dataset.bestScenarioText = bestScenarioText;
+                        shareButton.dataset.finalAmount = new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(bestFinalAmount);
+
+
+                    } catch (error) {
+                        console.error("An error occurred during certificate comparison calculation:", error);
+                        certificateComparisonResultDiv.innerHTML = `<p class="text-red-400">حدث خطأ أثناء حساب مقارنة الشهادات: ${error.message}. يرجى مراجعة المدخلات والمحاولة مرة أخرى.</p>`;
+                        shareButton.classList.add('hidden'); // Hide share button on error
+                    } finally {
+                        comparisonLoadingSpinner.classList.add('hidden');
+                    }
+                });
+                // END: Certificate Comparison Modal Logic
+
+                // START: Loan Calculator Modal Logic
+                const loanCalculatorModal = document.getElementById('loanCalculatorModal');
+                const openLoanCalculatorModalButton = document.getElementById('openLoanCalculatorModal');
+                const closeLoanCalculatorModalButton = document.getElementById('closeLoanCalculatorModalButton');
+                const loanCalculatorLoadingSpinner = document.getElementById('loanCalculatorLoadingSpinner');
+                const calculateLoanScenarioButton = document.getElementById('calculateLoanScenarioButton');
+                const loanScenarioResultDiv = document.getElementById('loanScenarioResult');
+
+                // Add null checks for these elements
+                if (!loanCalculatorModal) { console.error("FATAL ERROR: Element with ID 'loanCalculatorModal' not found."); return; }
+                if (!openLoanCalculatorModalButton) { console.error("FATAL ERROR: Element with ID 'openInvestmentAdviceModal' not found."); return; }
+                if (!closeLoanCalculatorModalButton) { console.error("FATAL ERROR: Element with ID 'closeLoanCalculatorModalButton' not found."); return; }
+                if (!loanCalculatorLoadingSpinner) { console.error("FATAL ERROR: Element with ID 'loanCalculatorLoadingSpinner' not found."); return; }
+                if (!calculateLoanScenarioButton) { console.error("FATAL ERROR: Element with ID 'calculateLoanScenarioButton' not found."); return; }
+                if (!loanScenarioResultDiv) { console.error("FATAL ERROR: Element with ID 'loanScenarioResultDiv' not found."); return; }
+
+                // Elements within the loan calculator modal
+                const initialAmountLoanInput = document.getElementById('initialAmountLoan');
+                const loanCertTypeSelect = document.getElementById('loanCertType');
+                const loanAnnualRateInput = document.getElementById('loanAnnualRate');
+                const loanDailyReinvestmentRateInput = document.getElementById('loanDailyReinvestmentRate');
+
+                if (!initialAmountLoanInput) { console.error("FATAL ERROR: Element with ID 'initialAmountLoan' not found."); return; }
+                if (!loanCertTypeSelect) { console.error("FATAL ERROR: Element with ID 'loanCertType' not found."); return; }
+                if (!loanAnnualRateInput) { console.error("FATAL ERROR: Element with ID 'loanAnnualRate' not found."); return; }
+                if (!loanDailyReinvestmentRateInput) { console.error("FATAL ERROR: Element with ID 'loanDailyReinvestmentRate' not found."); return; }
+
+
+                openLoanCalculatorModalButton.addEventListener('click', () => {
+                    loanCalculatorModal.style.display = 'flex';
+                    loanScenarioResultDiv.innerHTML = ''; // Clear previous results
+                });
+
+                closeLoanCalculatorModalButton.addEventListener('click', () => {
+                    loanCalculatorModal.style.display = 'none';
+                });
+
+                window.addEventListener('click', (event) => {
+                    if (event.target == loanCalculatorModal) {
+                        loanCalculatorModal.style.display = 'none';
+                    }
+                });
+
+                // Function to calculate Scenario 3 (Loan)
+                calculateLoanScenarioButton.addEventListener('click', () => {
+                    console.log("Calculate Loan Scenario button clicked.");
+                    loanScenarioResultDiv.innerHTML = '';
+                    loanCalculatorLoadingSpinner.classList.remove('hidden');
+
+                    try {
+                        const initialAmount = parseFloat(initialAmountLoanInput.value);
+                        const loanAnnualRate = parseFloat(loanAnnualRateInput.value);
+                        const dailyReinvestmentRate = parseFloat(loanDailyReinvestmentRateInput.value);
+                        const loanCertType = loanCertTypeSelect.value; // Get selected certificate type for loan
+
+                        if (isNaN(initialAmount) || initialAmount <= 0 || isNaN(loanAnnualRate) || isNaN(dailyReinvestmentRate)) {
+                            throw new Error("الرجاء إدخال أرقام صحيحة لجميع حقول القرض وإعادة الاستثمار.");
+                        }
+
+                        let certRatesForLoan = [];
+                        let certPayoutFrequencyForLoan = '';
+
+                        if (loanCertType === 'scenario1') {
+                            certRatesForLoan = scenario1CertData.rates;
+                            certPayoutFrequencyForLoan = scenario1CertData.payoutFrequency;
+                        } else if (loanCertType === 'scenario2') {
+                            certRatesForLoan = scenario2CertData.rates;
+                            certPayoutFrequencyForLoan = scenario2CertData.payoutFrequency;
+                        }
+
+                        if (certRatesForLoan.length === 0 || certPayoutFrequencyForLoan === '') {
+                            throw new Error("يرجى حساب مقارنة الشهادات أولاً في النافذة الأخرى لتحديد نوع الشهادة للقرض.");
+                        }
+
+                        const certPeriodsPerYearForLoan = getPayoutPeriodsPerYear(certPayoutFrequencyForLoan);
+                        
+                        // Scenario 3 Calculation: Certificate with loan, periodic payouts, and reinvestment of net cash flow
+                        let totalReinvestedSurplusesScenario3 = 0;
+                        let totalUserContributionScenario3 = 0;
+                        const loanPrincipal = initialAmount * 0.90; // 90% of certificate value
+                        const loanTermMonths = 3 * 12; // 3 years fixed
+                        const loanMonthlyRate = loanAnnualRate / 100 / 12;
+
+                        let monthlyLoanInstallment = 0;
+                        if (loanMonthlyRate > 0) {
+                            monthlyLoanInstallment = (loanPrincipal * loanMonthlyRate) / (1 - Math.pow(1 + loanMonthlyRate, -loanTermMonths));
+                        } else {
+                            monthlyLoanInstallment = loanPrincipal / loanTermMonths;
+                        }
+                        
+                        if (isNaN(monthlyLoanInstallment) || !isFinite(monthlyLoanInstallment)) {
+                            throw new Error("خطأ في حساب قسط القرض الشهري. يرجى مراجعة نسبة فائدة القرض.");
+                        }
+                        console.log(`Scenario 3 - Loan Principal: ${loanPrincipal.toFixed(2)}, Monthly Loan Rate: ${(loanMonthlyRate*100).toFixed(4)}%, Monthly Installment: ${monthlyLoanInstallment.toFixed(2)}`);
+                        
+                        const dailyReinvestmentRateFactor = (1 + dailyReinvestmentRate / 100 / 365);
+
+
+                        // Monthly loop for 3 years (36 months)
+                        for (let month = 0; month < loanTermMonths; month++) {
+                            const currentYearIndex = Math.floor(month / 12);
+                            // Ensure currentYearIndex does not exceed array bounds
+                            if (currentYearIndex >= certRatesForLoan.length) {
+                                console.warn(`Year index ${currentYearIndex} out of bounds for certRatesForLoan. Using last available rate.`);
+                                // Fallback to the last available rate if year index is out of bounds
+                                certRatesForLoan[currentYearIndex] = certRatesForLoan[certRatesForLoan.length - 1];
+                            }
+                            const currentAnnualCertRate = certRatesForLoan[currentYearIndex]; // Certificate rate from selected scenario
+
+                            let periodicCertIncome = 0;
+                            // Check if it's a payout period for the certificate
+                            if (certPeriodsPerYearForLoan > 0 && (month % (12 / certPeriodsPerYearForLoan) === 0)) {
+                                periodicCertIncome = initialAmount * (currentAnnualCertRate / 100) / certPeriodsPerYearForLoan;
+                            }
+                            if (isNaN(periodicCertIncome) || !isFinite(periodicCertIncome)) {
+                                throw new Error(`خطأ في حساب العائد الدوري للشهادة في السيناريو الثالث، الشهر ${month + 1}.`);
+                            }
+
+                            const netCashFlowThisMonth = periodicCertIncome - monthlyLoanInstallment;
+
+                            console.log(`Scenario 3 - Month ${month + 1}: Cert Income = ${periodicCertIncome.toFixed(2)}, Loan Installment = ${monthlyLoanInstallment.toFixed(2)}, Net Cash Flow = ${netCashFlowThisMonth.toFixed(2)}`);
+
+                            if (netCashFlowThisMonth > 0) {
+                                // Surplus: Reinvest this amount daily from this month until the end of 3 years
+                                const daysPassed = (month + 1) * (365 / 12); // Approximate days passed until end of this month
+                                const daysRemainingForCompounding = (3 * 365) - daysPassed;
+                                const actualDaysRemaining = Math.max(0, daysRemainingForCompounding);
+                                
+                                const futureValueOfSurplus = netCashFlowThisMonth * Math.pow(dailyReinvestmentRateFactor, actualDaysRemaining);
+                                if (isNaN(futureValueOfSurplus) || !isFinite(futureValueOfSurplus)) {
+                                    throw new Error(`خطأ في حساب القيمة المستقبلية للفائض في السيناريو الثالث، الشهر ${month + 1}.`);
+                                }
+                                totalReinvestedSurplusesScenario3 += futureValueOfSurplus;
+                                console.log(`  Surplus Reinvested: Days Remaining = ${actualDaysRemaining.toFixed(0)}, FV of Surplus = ${futureValueOfSurplus.toFixed(2)}`);
+                            } else {
+                                // Deficit: User adds this amount from pocket
+                                totalUserContributionScenario3 += Math.abs(netCashFlowThisMonth);
+                                console.log(`  Deficit: User contributes ${Math.abs(netCashFlowThisMonth).toFixed(2)}`);
+                            }
+                        }
+
+                        const finalAmountScenario3 = initialAmount + totalReinvestedSurplusesScenario3; // Certificate principal returned + reinvested surpluses
+                        const totalInvestmentScenario3 = initialAmount + totalUserContributionScenario3; // Initial certificate + user's added money
+
+                        if (totalInvestmentScenario3 <= 0) {
+                            throw new Error("إجمالي الاستثمار للسيناريو الثالث غير صالح للحساب (قد يكون صفر أو أقل).");
+                        }
+
+                        const roiScenario3 = ((finalAmountScenario3 - totalInvestmentScenario3) / totalInvestmentScenario3) * 100;
+                        const cagrScenario3 = (Math.pow(finalAmountScenario3 / totalInvestmentScenario3, 1/3) - 1) * 100;
+                        console.log("Scenario 3 Results:", { finalAmountScenario3: finalAmountScenario3.toFixed(2), totalUserContributionScenario3: totalUserContributionScenario3.toFixed(2), roiScenario3: roiScenario3.toFixed(2), cagrScenario3: cagrScenario3.toFixed(2) });
+
+                        // Get Arabic frequency for the selected loan certificate type
+                        const arabicLoanCertPayoutFrequency = translateFrequencyToArabic(certPayoutFrequencyForLoan);
+
+                        let loanResultHtml = `
+                            <p class="mb-2"><strong>العائد بعد 3 سنوات (السيناريو الثالث - شهادة بقرض بضمان شهادة تصرف ${arabicLoanCertPayoutFrequency}):</strong></p>
+                            <p class="text-lg font-bold highlight-yellow mb-2">${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(finalAmountScenario3)}</p>
+                            <p class="text-base mb-2">إجمالي مساهمة المستخدم الإضافية: ${new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(totalUserContributionScenario3.toFixed(2))}</p>
+                            <p class="text-base mb-2">ROI: ${roiScenario3.toFixed(2)}%</p>
+                            <p class="text-base mb-4">معدل العائد السنوي المكافئ (CAGR): ${cagrScenario3.toFixed(2)}%</p>
+                        `;
+
+                        // Provide advice on whether to take the loan
+                        const maxFinalAmountOfCertificates = Math.max(finalAmountScenario1Global, finalAmountScenario2Global);
+                        let loanAdvice = '';
+
+                        // Compare the final value of scenario 3 against the best of scenario 1/2
+                        if (finalAmountScenario3 > maxFinalAmountOfCertificates && totalUserContributionScenario3 <= (initialAmount * 0.05)) { // Small user contribution tolerance
+                            loanAdvice = '<p class="text-green-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو قد يكون مفيداً، حيث أدى إلى عائد نهائي أعلى مع مساهمة إضافية محدودة.</p>';
+                        } else if (finalAmountScenario3 > maxFinalAmountOfCertificates && totalUserContributionScenario3 > (initialAmount * 0.05)) {
+                            loanAdvice = '<p class="text-yellow-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو أدى إلى عائد نهائي أعلى، ولكن تطلب مساهمة إضافية كبيرة. يرجى مراجعة قدرتك على تغطية هذه المساهمات.</p>';
+                        }
+                        else if (finalAmountScenario3 < maxFinalAmountOfCertificates) {
+                            loanAdvice = '<p class="text-red-400 font-bold text-xl">نصيحة: أخذ القرض في هذا السيناريو أدى إلى عائد نهائي أقل. قد لا يكون الخيار الأمثل لك.</p>';
+                        } else {
+                            loanAdvice = '<p class="text-gray-400 font-bold text-xl">نصيحة: العائد من هذا السيناريو قريب من أفضل سيناريوهات الشهادات الأخرى. يرجى مراجعة التفاصيل لاتخاذ القرار.</p>';
+                        }
+
+                        loanResultHtml += loanAdvice;
+                        loanScenarioResultDiv.innerHTML = loanResultHtml;
+                        console.log("Loan scenario calculation completed and advice displayed.");
+
+                    } catch (error) {
+                        console.error("An error occurred during loan scenario calculation:", error);
+                        loanScenarioResultDiv.innerHTML = `<p class="text-red-400">حدث خطأ أثناء حساب وضع القرض: ${error.message}. يرجى مراجعة المدخلات والمحاولة مرة أخرى.</p>`;
+                    } finally {
+                        loanCalculatorLoadingSpinner.classList.add('hidden');
+                    }
+                });
+                // END: Loan Calculator Modal Logic
+            } catch (error) {
+                console.error('Error fetching initial data:', error);
+                loadingOverlay.innerHTML = `<p class="text-red-400">فشل تحميل البيانات الأولية: ${error.message}. يرجى المحاولة مرة أخرى.</p>`;
+            } finally {
+                // Hide loading overlay and show content
+                loadingOverlay.remove();
+                if (mainContent) mainContent.style.display = 'block';
+                if (header) header.style.display = 'block';
+                if (footer) footer.style.display = 'block';
+                if (floatingButtons) floatingButtons.style.display = 'flex';
+            }
         };
 
         function shareResult() {
